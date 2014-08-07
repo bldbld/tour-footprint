@@ -13,8 +13,6 @@
 		<header>
 			<div class="row-bot">
 				<div class="main">
-					<figure class="img-indent-r"><img src="{% static "tourfp_web/images/page1-img1.png" %}" alt="" />
-					</figure>
 					<div class="wrapper">
 						<article class="grid_8">
 							<div class="extra-wrap indent">
@@ -41,19 +39,12 @@
 								<a class="button2" href="{%url 'reg'%}">注册</a>
 								<a class="button2" href="{%url 'login'%}">登录</a>
 								{%endif%}
-
 							</div>
 						</article>
 						<article class="grid_4">
 							<div class="indent-top">
 								<div class="box">
-									<div class="padding">
-										<strong class="text-1">Troop # 345 Meetings</strong>
-										<figure class="p2"><img src="images/page1-img3.jpg" alt="">
-										</figure>
-										<h6><strong>Monday 9:00 - 12:00</strong></h6>
-										Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy.
-									</div>
+									
 								</div>
 							</div>
 						</article>
@@ -73,9 +64,12 @@
 				<div class="container_12">
 					<div class="wrapper p3">
 						<div id="mapcontainer" / ></div>
-						<div class="wrapper p3">
-							<div>
-								<table id="route_list_table" width="700" border="0" cellspacing="0" cellpadding="0">
+		
+						<div class="wrapper">
+							<article class="grid_8">
+								<h2>路线列表：</h2>
+								<div>
+								<table id="route_list_table" width="500" border="0" cellspacing="0" cellpadding="0">
 									<tr>
 										<td height="30" align="center" bgcolor="#CCCCCC">序号</td>
 										<td align="center" bgcolor="#CCCCCC">名称</td>
@@ -96,89 +90,26 @@
 
 								</table>
 							</div>
-							<div>
-								<input type="button" id="btn_deltr" onclick="addStart()" value="添加">
-								<div>
-									<p>
-										起点:
-										<input id="add_start" type="text" name="fname" />
-									</p>
-									<p>
-										重点:
-										<input id="add_end" type="text" name="lname" />
-									</p>
-									<input type="submit" value="Submit" onclick="addSave()"/>
-								</div>
-							</div>
-						</div>
-						<div class="wrapper">
-							<article class="grid_8">
-								<h2>他们正在使用并分享：</h2>
-								<div class="wrapper border-bot p3">
-									<time class="tdate-1" datetime="2012-10-21">
-										<span>Tuesday</span>
-										<strong>31</strong>
-									</time>
-									<div class="extra-wrap">
-										<p class="prev-indent-bot">
-											<span class="color-1">这是一款出色的产品</span> sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus ipsum dolor sit amet.
-										</p>
-										<p>
-											Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet.
-										</p>
-										<a class="button2" href="#">more</a>
-									</div>
-								</div>
-								<div class="wrapper">
-									<time class="tdate-1" datetime="2012-10-21">
-										<span>Monday</span>
-										<strong>23</strong>
-									</time>
-									<div class="img-indent">
-										<p class="p3"><img src="images/page1-img2.png" alt="">
-										</p>
-										<a class="button2" href="#">more</a>
-									</div>
-									<div class="extra-wrap">
-										<span class="color-1">非常的棒！</span>, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-									</div>
-								</div>
 							</article>
 							<article class="grid_4">
 								<div class="indent-top">
-									<h3 class="indent-bot">优势大大滴</h3>
-									<div class="indent-left p3">
-										<ul class="list-2">
-											<li>
-												<a href="#">Lorem ipsum dolor sit amet</a>
-											</li>
-											<li>
-												<a href="#">Consetetur sadipscing elitr sed diam</a>
-											</li>
-											<li>
-												<a href="#">Nonumy eirmod tempor invidunt ut</a>
-											</li>
-											<li>
-												<a href="#">Labore et dolore magna</a>
-											</li>
-											<li>
-												<a href="#">Aliquyam erat sed diam voluptua</a>
-											</li>
-											<li>
-												<a href="#">Vero eos et accusam et justo duo</a>
-											</li>
-											<li class="last-item">
-												<a href="#">Stet clita kasd gubergren</a>
-											</li>
-										</ul>
-									</div>
 									<div class="box">
 										<div class="padding">
-											<strong class="text-1">Troop # 345 Meetings</strong>
-											<figure class="p2"><img src="images/page1-img3.jpg" alt="">
-											</figure>
-											<h6><strong>Monday 9:00 - 12:00</strong></h6>
-											Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy.
+											<h3 class="indent-bot">添加地点</h3>
+											<div>
+												<input type="button" id="btn_deltr" onclick="addStart()" value="添加">
+												<div>
+													<p>
+														起点:
+														<input id="add_start" type="text" name="fname" />
+													</p>
+													<p>
+														重点:
+														<input id="add_end" type="text" name="lname" />
+													</p>
+													<input type="submit" value="Submit" onclick="addSave()"/>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -271,7 +202,7 @@
 					dataType : "json",
 					success : function(json) {
 						var i = 0;
-						window.alert(json);
+						// window.alert(json);
 						var jsonO = eval("(" + json + ")");
 						while (true) {
 							if (jsonO.route[i] == null) {
@@ -370,7 +301,7 @@
 				map.centerAndZoom(spoint, 10);
 				// 初始化地图，设置中心点坐标和地图级别
 				// map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
-				map.centerAndZoom(spoint, 15);
+				map.centerAndZoom(spoint, 5);
 				map.addControl(new BMap.NavigationControl());
 
 				//var route_arr = '{{route_list}}';
@@ -402,12 +333,13 @@
 				//drawLine(bjPoint, new BMap.Point(116.404, 39.915));
 				//drawLine(new BMap.Point(126.404, 39.915), new BMap.Point(116.404, 39.915));
 
-				var polyline1 = new BMap.Polyline([new BMap.Point(118.70718912023, 40.004529004226), new BMap.Point(118.18703339943, 39.636668880397)], {
-					strokeColor : "blue",
-					strokeWeight : 3,
-					strokeOpacity : 0.5
-				});
-				map.addOverlay(polyline1);
+// test codes
+				// var polyline1 = new BMap.Polyline([new BMap.Point(118.70718912023, 40.004529004226), new BMap.Point(118.18703339943, 39.636668880397)], {
+					// strokeColor : "blue",
+					// strokeWeight : 3,
+					// strokeOpacity : 0.5
+				// });
+				// map.addOverlay(polyline1);
 			}
 
 			function initPoint(lng, lat) {
