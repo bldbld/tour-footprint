@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>欢迎来到 旅程地图</title>
+    <meta charset="utf-8">
+    {% load staticfiles %}
+</head>
+<body id="page1" onload = "init()">
+	<!--==============================header=================================-->
+	{% include 'base.html' %}
+	<header>
+        <div class="row-bot">
+        	<div class="main">
+                <figure class="img-indent-r"><img src="{% static "tourfp_web/images/page1-img1.png" %}" alt="" /></figure>
+               	 <div class="wrapper">
+               	 	<article class="grid_8">
+               	<div class="extra-wrap indent">
+						{% if messages %}
+						<ul>
+							{% for message in messages %}
+							<li>
+								{{ message }}
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						<p>
+							
+						</p>
+						{% endif %}
+
+						{%if request.user.is_authenticated %}
+						<p>
+							旅行集: <select id="select_tourset"  ></select>
+							旅行: <select id="select_tourset"  ></select>
+						</p>
+						
+						<a class="button2" id = "add_tourset">增加旅行集</a>
+						<a class="button2" id = "add_trip">增加旅行</a>
+						<a class="button2" id = "add_route">增加路线</a>
+						<a class="button2" id = "add_place">增加地点</a>
+						{%else%}
+						<p>
+							旅程地图是一个可以记录并分享你的旅程足迹，在地图上标记下来的网站。
+						</p>
+						<a class="button2" href="{%url 'reg'%}">注册</a>
+						<a class="button2" href="{%url 'login'%}">登录</a>
+						{%endif%}
+
+					</div>
+					</article>
+					<article class="grid_4">
+                    	<div class="indent-top">
+                            <div class="box">
+                            	<div class="padding">
+                                	<strong class="text-1">Troop # 345 Meetings</strong>
+                                    <figure class="p2"><img src="images/page1-img3.jpg" alt=""></figure>
+                                    <h6><strong>Monday 9:00 - 12:00</strong></h6>
+                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy.
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+					 </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </header>
+    
+	<!--==============================content================================-->
+    <section id="content"><div class="ic">More Website Templates @ <a href="http://www.mycodes.net/" >网页模板</a> - February 06, 2012!</div>
+        <div class="main">
+            <div class="container_12">
+                <div class="wrapper p3">
+                	<iframe src="{% url 'showmap' %}" width="100%" height="600"> </iframe>
+                	
+                </div>
+                <div class="wrapper">
+                	<article class="grid_8">
+                    	<h2>他们正在使用并分享：</h2>
+                        <div class="wrapper border-bot p3">
+                        	<time class="tdate-1" datetime="2012-10-21">
+                            	<span>Tuesday</span>
+                                <strong>31</strong>
+                            </time>
+                            <div class="extra-wrap">
+                            	<p class="prev-indent-bot"><span class="color-1">这是一款出色的产品</span> sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus ipsum dolor sit amet. </p>
+                                <p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet.</p>
+                                <a class="button2" href="#">more</a>
+                            </div>
+                        </div>
+                        <div class="wrapper">
+                        	<time class="tdate-1" datetime="2012-10-21">
+                            	<span>Monday</span>
+                                <strong>23</strong>
+                            </time>
+                            <div class="img-indent">
+                            	<p class="p3"><img src="images/page1-img2.png" alt=""></p>
+                                <a class="button2" href="#">more</a>
+                            </div>
+                            <div class="extra-wrap">
+                            	<span class="color-1">非常的棒！</span>, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                    </article>
+                    <article class="grid_4">
+                    	<div class="indent-top">
+                            <h3 class="indent-bot">优势大大滴</h3>
+                            <div class="indent-left p3">
+                                <ul class="list-2">
+                                    <li><a href="#">Lorem ipsum dolor sit amet</a></li>
+                                    <li><a href="#">Consetetur sadipscing elitr sed diam</a></li>
+                                    <li><a href="#">Nonumy eirmod tempor invidunt ut</a></li>
+                                    <li><a href="#">Labore et dolore magna</a></li>
+                                    <li><a href="#">Aliquyam erat sed diam voluptua</a></li>
+                                    <li><a href="#">Vero eos et accusam et justo duo</a></li>
+                                    <li class="last-item"><a href="#">Stet clita kasd gubergren</a></li>
+                                </ul>
+                            </div>
+                            <div class="box">
+                            	<div class="padding">
+                                	<strong class="text-1">Troop # 345 Meetings</strong>
+                                    <figure class="p2"><img src="images/page1-img3.jpg" alt=""></figure>
+                                    <h6><strong>Monday 9:00 - 12:00</strong></h6>
+                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy.
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+	<!--==============================footer=================================-->
+    <footer>
+        <div class="main">
+        	<div class="container_12">	
+            	<div class="wrapper">
+                    <div class="grid_8">
+                        <div class="aligncenter">
+                            Eagles Troops &copy; 2012
+                            <span><a rel="nofollow" target="_blank" href="http://www.mycodes.net/">Website Template</a>  | <a rel="nofollow" target="_blank" href="http://www.mycodes.net/">源码之家</a></span>
+                        </div>
+                    </div>
+                    <div class="grid_3 prefix_1">
+                        <ul class="list-services">
+                            <li><a href="#"></a></li>
+                            <li class="item-1"><a href="#"></a></li>
+                            <li class="item-2"><a href="#"></a></li>
+                            <li class="item-3"><a href="#"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+	<script type="text/javascript"> Cufon.now(); </script>
+	<script type="text/javascript">
+	
+		// 初始化页面
+		function init() {
+			var userAgent = navigator.userAgent.toLowerCase();
+			var isFireFox = /mozilla/.test(userAgent) && !/(compatible|webkit)/.test(userAgent);
+			if (isFireFox) {
+				window.showModelessDialog = function(url) {
+					var windowName = (arguments[1] == null ? "" : arguments[1].toString());
+					var feature = (arguments[2] == null ? "" : arguments[2].toString());
+					var OpenedWindow = window.open(url, windowName, feature);
+					window.addEventListener('click', function() {
+						OpenedWindow.focus();
+					}, false);
+					return OpenedWindow;
+				};
+			} else {
+				//子窗口中调用父窗口
+				//IE中用window.parent.document
+				//FF中用window.opener.document
+				//下面的代码将 作用于IE '重载' window.showModelessDialog 方法 统一用 window.opener访问父窗口
+				var originFn = window.showModelessDialog;
+				window.showModelessDialog = function(url) {
+					var OpenedWindow = originFn(url, arguments[1], arguments[2]);
+					OpenedWindow.opener = window;
+				};
+			}
+
+			document.getElementById('add_tourset').onclick = function() {
+				// window.showModelessDialog("{%url 'add_tourset'%}");
+				var OpenedWindow = window.showModelessDialog("{%url 'add_tourset'%}", '', 'width=400,height=400');
+			};
+
+			document.getElementById('add_trip').onclick = function() {
+				var OpenedWindow = window.showModelessDialog("{%url 'add_trip'%}", '', 'width=400,height=400');
+			};
+			
+			document.getElementById('add_route').onclick = function() {
+				var OpenedWindow = window.showModelessDialog("{%url 'add_route'%}", '', 'width=400,height=400');
+			};
+			
+			document.getElementById('add_place').onclick = function() {
+				var OpenedWindow = window.showModelessDialog("{%url 'add_place'%}", '', 'width=400,height=400');
+			};
+		}
+
+		</script>
+</body>
+</html>

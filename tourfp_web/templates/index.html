@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>欢迎来到 旅程地图</title>
+    <meta charset="utf-8">
+    {% load staticfiles %}
+</head>
+<body id="page1">
+	<!--==============================header=================================-->
+	{% include 'base.html' %}
+    <header>
+        <div class="row-bot">
+        	<div class="main">
+                <figure class="img-indent-r"><img src="{% static "tourfp_web/images/page1-img1.png" %}" alt="" /></figure>
+               	<div class="extra-wrap indent">
+						{% if messages %}
+						<ul>
+							{% for message in messages %}
+							<li>
+								{{ message }}
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						<p>
+							
+						</p>
+						{% endif %}
+						<strong class="title-1">欢迎来到 旅程地图</strong>
+						{%if request.user.is_authenticated %}
+						<a class="button2" href="{%url 'help'%}">使用说明</a>
+						<a class="button2" href="{%url 'createmap'%}">创建旅程地图</a>
+						{%else%}
+						<p>
+							旅程地图是一个可以记录并分享你的旅程足迹，在地图上标记下来的网站。
+						</p>
+						<a class="button2" href="{%url 'reg'%}">注册</a>
+						<a class="button2" href="{%url 'login'%}">登录</a>
+						{%endif%}
+
+					</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </header>
+    
+	<!--==============================content================================-->
+    <section id="content"><div class="ic">More Website Templates @ <a href="http://www.mycodes.net/" >网页模板</a> - February 06, 2012!</div>
+        <div class="main">
+            <div class="container_12">
+                <div class="wrapper p3">
+                	<article class="grid_4">
+                    	<div class="banner">
+                        	<figure><img src="{% static "tourfp_web/images/banner-1.png" %}" alt="" /></figure>
+                            <a class="button" href="#">more</a>
+                        </div>
+                    </article>
+                    <article class="grid_4">
+                    	<div class="banner">
+                        	<figure><img src="{% static "tourfp_web/images/banner-2.png" %}" alt="" /></figure>
+                            <a class="button" href="#">more</a>
+                        </div>
+                    </article>
+                    <article class="grid_4">
+                    	<div class="banner">
+                        	<figure><img src="{% static "tourfp_web/images/banner-3.png" %}" alt="" /></figure>
+                            <a class="button" href="#">more</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="wrapper">
+                	<article class="grid_8">
+                    	<h2>他们正在使用并分享：</h2>
+                        <div class="wrapper border-bot p3">
+                        	<time class="tdate-1" datetime="2012-10-21">
+                            	<span>Tuesday</span>
+                                <strong>31</strong>
+                            </time>
+                            <div class="extra-wrap">
+                            	<p class="prev-indent-bot"><span class="color-1">这是一款出色的产品</span> sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus ipsum dolor sit amet. </p>
+                                <p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet.</p>
+                                <a class="button2" href="#">more</a>
+                            </div>
+                        </div>
+                        <div class="wrapper">
+                        	<time class="tdate-1" datetime="2012-10-21">
+                            	<span>Monday</span>
+                                <strong>23</strong>
+                            </time>
+                            <div class="img-indent">
+                            	<p class="p3"><img src="images/page1-img2.png" alt=""></p>
+                                <a class="button2" href="#">more</a>
+                            </div>
+                            <div class="extra-wrap">
+                            	<span class="color-1">非常的棒！</span>, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                    </article>
+                    <article class="grid_4">
+                    	<div class="indent-top">
+                            <h3 class="indent-bot">优势大大滴</h3>
+                            <div class="indent-left p3">
+                                <ul class="list-2">
+                                    <li><a href="#">Lorem ipsum dolor sit amet</a></li>
+                                    <li><a href="#">Consetetur sadipscing elitr sed diam</a></li>
+                                    <li><a href="#">Nonumy eirmod tempor invidunt ut</a></li>
+                                    <li><a href="#">Labore et dolore magna</a></li>
+                                    <li><a href="#">Aliquyam erat sed diam voluptua</a></li>
+                                    <li><a href="#">Vero eos et accusam et justo duo</a></li>
+                                    <li class="last-item"><a href="#">Stet clita kasd gubergren</a></li>
+                                </ul>
+                            </div>
+                            <div class="box">
+                            	<div class="padding">
+                                	<strong class="text-1">Troop # 345 Meetings</strong>
+                                    <figure class="p2"><img src="images/page1-img3.jpg" alt=""></figure>
+                                    <h6><strong>Monday 9:00 - 12:00</strong></h6>
+                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy.
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+	<!--==============================footer=================================-->
+    <footer>
+        <div class="main">
+        	<div class="container_12">	
+            	<div class="wrapper">
+                    <div class="grid_8">
+                        <div class="aligncenter">
+                            Eagles Troops &copy; 2012
+                            <span><a rel="nofollow" target="_blank" href="http://www.mycodes.net/">Website Template</a>  | <a rel="nofollow" target="_blank" href="http://www.mycodes.net/">源码之家</a></span>
+                        </div>
+                    </div>
+                    <div class="grid_3 prefix_1">
+                        <ul class="list-services">
+                            <li><a href="#"></a></li>
+                            <li class="item-1"><a href="#"></a></li>
+                            <li class="item-2"><a href="#"></a></li>
+                            <li class="item-3"><a href="#"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+	<script type="text/javascript"> Cufon.now(); </script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<title>欢迎来到 旅程地图</title>
+		<meta charset="utf-8">
+		{% load staticfiles %}
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fci7iKfiurBcqTSeXEm0lGtw"></script>
+
+	</head>
+	<body id="page1" onload = "init()">
+		<!--==============================header=================================-->
+		{% include 'base.html' %}
+		<header>
+			<div class="row-bot">
+				<div class="main">
+					<figure class="img-indent-r"><img src="{% static "tourfp_web/images/page1-img1.png" %}" alt="" />
+					</figure>
+					<div class="wrapper">
+						<article class="grid_8">
+							<div class="extra-wrap indent">
+								{% if messages %}
+								<ul>
+									{% for message in messages %}
+									<li>
+										{{ message }}
+									</li>
+									{% endfor %}
+								</ul>
+								{% else %}
+								<p>
+
+								</p>
+								{% endif %}
+
+								{%if request.user.is_authenticated %}
+
+								{%else%}
+								<p>
+									旅程地图是一个可以记录并分享你的旅程足迹，在地图上标记下来的网站。
+								</p>
+								<a class="button2" href="{%url 'reg'%}">注册</a>
+								<a class="button2" href="{%url 'login'%}">登录</a>
+								{%endif%}
+
+							</div>
+						</article>
+						<article class="grid_4">
+							<div class="indent-top">
+								<div class="box">
+									<div class="padding">
+										<strong class="text-1">Troop # 345 Meetings</strong>
+										<figure class="p2"><img src="images/page1-img3.jpg" alt="">
+										</figure>
+										<h6><strong>Monday 9:00 - 12:00</strong></h6>
+										Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy.
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</header>
+
+		<!--==============================content================================-->
+		<section id="content">
+			<div class="ic">
+				More Website Templates @ <a href="http://www.mycodes.net/" >网页模板</a> - February 06, 2012!
+			</div>
+
+			<div class="main">
+				<div class="container_12">
+					<div class="wrapper p3">
+						<div id="mapcontainer" / ></div>
+						<div class="wrapper p3">
+							<div>
+								<table id="route_list_table" width="700" border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td height="30" align="center" bgcolor="#CCCCCC">序号</td>
+										<td align="center" bgcolor="#CCCCCC">名称</td>
+										<td align="center" bgcolor="#CCCCCC">操作</td>
+									</tr>
+
+									<tr>
+										<td height="30" align="center">
+										<input type="text" size="2" value="1" />
+										</td>
+										<td align="center">
+										<input type="text" name="brief_title" />
+										</td>
+										<td align="center">
+										<input type="button" id="btn_deltr" onclick="deltr()" value="删除">
+										</td>
+									</tr>
+
+								</table>
+							</div>
+							<div>
+								<input type="button" id="btn_deltr" onclick="addStart()" value="添加">
+								<div>
+									<p>
+										起点:
+										<input id="add_start" type="text" name="fname" />
+									</p>
+									<p>
+										重点:
+										<input id="add_end" type="text" name="lname" />
+									</p>
+									<input type="submit" value="Submit" onclick="addSave()"/>
+								</div>
+							</div>
+						</div>
+						<div class="wrapper">
+							<article class="grid_8">
+								<h2>他们正在使用并分享：</h2>
+								<div class="wrapper border-bot p3">
+									<time class="tdate-1" datetime="2012-10-21">
+										<span>Tuesday</span>
+										<strong>31</strong>
+									</time>
+									<div class="extra-wrap">
+										<p class="prev-indent-bot">
+											<span class="color-1">这是一款出色的产品</span> sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus ipsum dolor sit amet.
+										</p>
+										<p>
+											Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet.
+										</p>
+										<a class="button2" href="#">more</a>
+									</div>
+								</div>
+								<div class="wrapper">
+									<time class="tdate-1" datetime="2012-10-21">
+										<span>Monday</span>
+										<strong>23</strong>
+									</time>
+									<div class="img-indent">
+										<p class="p3"><img src="images/page1-img2.png" alt="">
+										</p>
+										<a class="button2" href="#">more</a>
+									</div>
+									<div class="extra-wrap">
+										<span class="color-1">非常的棒！</span>, no sea takimata sanctus est Lorem ipsum dolor sit amet lorem ipsum dolor sit amet, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+									</div>
+								</div>
+							</article>
+							<article class="grid_4">
+								<div class="indent-top">
+									<h3 class="indent-bot">优势大大滴</h3>
+									<div class="indent-left p3">
+										<ul class="list-2">
+											<li>
+												<a href="#">Lorem ipsum dolor sit amet</a>
+											</li>
+											<li>
+												<a href="#">Consetetur sadipscing elitr sed diam</a>
+											</li>
+											<li>
+												<a href="#">Nonumy eirmod tempor invidunt ut</a>
+											</li>
+											<li>
+												<a href="#">Labore et dolore magna</a>
+											</li>
+											<li>
+												<a href="#">Aliquyam erat sed diam voluptua</a>
+											</li>
+											<li>
+												<a href="#">Vero eos et accusam et justo duo</a>
+											</li>
+											<li class="last-item">
+												<a href="#">Stet clita kasd gubergren</a>
+											</li>
+										</ul>
+									</div>
+									<div class="box">
+										<div class="padding">
+											<strong class="text-1">Troop # 345 Meetings</strong>
+											<figure class="p2"><img src="images/page1-img3.jpg" alt="">
+											</figure>
+											<h6><strong>Monday 9:00 - 12:00</strong></h6>
+											Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy.
+										</div>
+									</div>
+								</div>
+							</article>
+						</div>
+					</div>
+				</div>
+		</section>
+
+		<!--==============================footer=================================-->
+		<footer>
+			<div class="main">
+				<div class="container_12">
+					<div class="wrapper">
+						<div class="grid_8">
+							<div class="aligncenter">
+								Eagles Troops &copy; 2012
+								<span><a rel="nofollow" target="_blank" href="http://www.mycodes.net/">Website Template</a> | <a rel="nofollow" target="_blank" href="http://www.mycodes.net/">源码之家</a></span>
+							</div>
+						</div>
+						<div class="grid_3 prefix_1">
+							<ul class="list-services">
+								<li>
+									<a href="#"></a>
+								</li>
+								<li class="item-1">
+									<a href="#"></a>
+								</li>
+								<li class="item-2">
+									<a href="#"></a>
+								</li>
+								<li class="item-3">
+									<a href="#"></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<script type="text/javascript">
+			Cufon.now();
+		</script>
+		<script type="text/javascript">
+			/**
+			 * 路线列表记录数
+			 */
+			var count = 0;
+			
+			/**
+			 * 初始化页面
+			 */ 
+			function init() {
+				initRouteListBrief();
+				initMap();
+				initRouteList();
+			}
+
+			/**
+			 * Ajax获取路线列表（展示表格）
+			 */
+			function initRouteListBrief() {
+				$.ajax({
+					type : "GET",
+					url : "/get_simpleroute_list/",
+					dataType : "json",
+					success : function(json) {
+						var i = 0;
+						var jsonO = eval("(" + json + ")");
+						while (true) {
+							if (jsonO.route[i] == null) {
+								break;
+							} else {
+								add_row_value(jsonO.route[i].from_title + " - " + jsonO.route[i].to_title);
+							}
+							i++;
+						}
+						//$("#route_list_table").find("tr:eq(1)").hide();
+					}
+				});
+			}
+
+			/**
+			 * Ajax获取路线列表（展示地图）
+			 */
+			function initRouteList() {
+				$.ajax({
+					type : "GET",
+					url : "/get_simpleroute_list_line/",
+					dataType : "json",
+					success : function(json) {
+						var i = 0;
+						window.alert(json);
+						var jsonO = eval("(" + json + ")");
+						while (true) {
+							if (jsonO.route[i] == null) {
+								break;
+							} else {
+								var from = initPoint(jsonO.route[i].from_lng, jsonO.route[i].from_lat);
+								
+								var to = initPoint(jsonO.route[i].to_lng, jsonO.route[i].to_lat);
+								drawLine(from, to);
+							}
+							i++;
+						}
+					}
+				});
+			}
+			
+			/**
+			 * Ajax保存路线
+			 */
+			function saveRoute(paradata) {
+				$.ajax({
+					type : "GET",
+					url : "/save_simpleroute/",
+					dataType : "json",
+					data: paradata,
+					success : function(json) {
+						;
+					}
+				});
+			}
+
+			function add_row() {
+				$("#route_list_table").find("tr:eq(1)").clone().appendTo("#route_list_table");
+				//在表格后面添加一行
+				$("tr:last td input:first").val(++count);
+				//改变添加的行的ID值。
+			};
+
+			/**
+			 * 对路线列表添加一行
+			 * @param value 展示信息
+			 */
+			function add_row_value(value) {
+				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").clone().appendTo("#route_list_table");
+				count++;
+				//在表格后面添加一行
+				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").find("td:eq(0)").text(count);
+				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").find("td:eq(1)").text(value);
+			};
+
+			/**
+			 * 对路线列表删除一行
+			 */
+			function deltr() {
+				var length = $("tr").length;
+				if (length <= 2) {
+					alert("至少保留一行");
+				} else {
+					$("tr:last").remove();
+					count--;
+				}
+			}
+
+			function addStart() {
+			}
+
+			/**
+			 * 保存一条路线 
+			 */
+			function addSave() {
+				var startname = $("#add_start").attr("value");
+				var endname = $("#add_end").attr("value");
+				// 展示到表格上
+				add_row_value(startname + " - " + endname);
+				
+				var paradata =  { "startName": startname, "endName": endname };
+				saveRoute(paradata);
+			}
+
+			////////////////////////////////////////////////////////////
+			// 地图相关
+			
+			/**
+			 * Baidu地图对象 
+			 */
+			var map;
+			
+			/**
+			 * 初始化地图 
+			 */
+			function initMap() {
+				map = new BMap.Map("mapcontainer");
+				// 创建地图实例
+				var spoint = new BMap.Point(116.404, 39.915);
+				// 创建点坐标
+				map.centerAndZoom(spoint, 10);
+				// 初始化地图，设置中心点坐标和地图级别
+				// map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
+				map.centerAndZoom(spoint, 15);
+				map.addControl(new BMap.NavigationControl());
+
+				//var route_arr = '{{route_list}}';
+
+				//var reg = new RegExp(/(&#39;)/g);
+				//route_arr = route_arr.replace(reg, "");
+				//route_arr = route_arr.substring(1, route_arr.length - 2).split(",");
+
+				// window.alert (route_arr);
+				// window.alert (route_arr.length);
+				// for (var i = 0; i<route_arr.length; i+=4 ){
+				//
+				// map.addOverlay(
+				// new BMap.Polyline([new BMap.Point(Number(route_arr[i]), Number(route_arr[i+1])), new BMap.Point(Number(route_arr[i+2]), Number(route_arr[i+3]))], {
+				// strokeColor : "blue",
+				// strokeWeight : 3,
+				// strokeOpacity : 0.5
+				// })
+				// );
+				// }
+
+				//drawCircle(new BMap.Point(109.404, 39.915));
+				//drawCircle(new BMap.Point(109.404, 37.915));
+				//var bjPoint = new BMap.Point(109.404, 39.915);
+				//getPoint();
+				//alert(bjPoint.lng);
+				//alert(bjPoint.lat);
+				//drawCircle(bjPoint);
+				//drawLine(bjPoint, new BMap.Point(116.404, 39.915));
+				//drawLine(new BMap.Point(126.404, 39.915), new BMap.Point(116.404, 39.915));
+
+				var polyline1 = new BMap.Polyline([new BMap.Point(118.70718912023, 40.004529004226), new BMap.Point(118.18703339943, 39.636668880397)], {
+					strokeColor : "blue",
+					strokeWeight : 3,
+					strokeOpacity : 0.5
+				});
+				map.addOverlay(polyline1);
+			}
+
+			function initPoint(lng, lat) {
+				var point = new BMap.Point(lng, lat);
+				return point;
+			}
+
+			function drawCircle(point) {
+				//var point = new BMap.Point(116.404, 39.915);
+				var circle = new BMap.Circle(point, 20000);
+
+				map.addOverlay(circle);
+			}
+
+			function drawLine(start, end) {
+				var polyline = new BMap.Polyline([start, end], {
+					strokeColor : "blue",
+					strokeWeight : 3,
+					strokeOpacity : 0.5
+				});
+				map.addOverlay(polyline);
+			}
+
+		</script>
+	</body>
+</html>
