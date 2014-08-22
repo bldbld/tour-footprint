@@ -41,9 +41,9 @@ def get_simpleroute_list(request):
 # 保存一条路线
 def save_simpleroute(request):
     startName = request.GET.get("startName")
-    print(startName)
+    # print(startName)
     endName = request.GET.get("endName")
-    print(endName)
+    # print(endName)
     # startPoint = SimplePoint()
     # endPoint = SimplePoint()
     startPoint = getCityPlaceByBaidu(startName);
@@ -52,11 +52,27 @@ def save_simpleroute(request):
     print(endPoint.lat)
     sr = SimpleRoute(from_title = startName, from_lng = startPoint.lng, from_lat = startPoint.lat,
                         to_title = endName, to_lng = endPoint.lng, to_lat = endPoint.lat, owner = request.user)
-    print(1)
-    print(sr.to_json_brief())
-    print(sr.to_json_line())
+    # print(1)
+    # print(sr.to_json_brief())
+    # print(sr.to_json_line())
     sr.save()
-    return HttpResponse()  
+    json_str = "{'route':[" + sr.to_json_line() + ']}'
+    return HttpResponse(json.dumps(json_str, ensure_ascii = False))  
 
-def deleteSimpleRoute(request):
+# 删除一条路线
+def delete_simpleroute(request):
+    startName = request.GET.get("startName")
+    endName = request.GET.get("endName")
+    print(startName)
+    route_list_q = SimpleRoute.objects.filter(owner=request.user, from_title=startName, to_title=endName)
+    print (route_list_q)
+    for item_q in route_list_q:
+        item_q.delete()
     return
+
+# 校验城市名是否重复，及是否存在
+def check_cityname(request):
+    startName = request.GET.get("startName")
+    endName = request.GET.get("endName")
+    
+    

@@ -44,7 +44,7 @@
 						<article class="grid_4">
 							<div class="indent-top">
 								<div class="box">
-									
+
 								</div>
 							</div>
 						</article>
@@ -64,32 +64,32 @@
 				<div class="container_12">
 					<div class="wrapper p3">
 						<div id="mapcontainer" / ></div>
-		
+
 						<div class="wrapper">
 							<article class="grid_8">
 								<h2>路线列表：</h2>
 								<div>
-								<table id="route_list_table" width="500" border="0" cellspacing="0" cellpadding="0">
-									<tr>
-										<td height="30" align="center" bgcolor="#CCCCCC">序号</td>
-										<td align="center" bgcolor="#CCCCCC">名称</td>
-										<td align="center" bgcolor="#CCCCCC">操作</td>
-									</tr>
+									<table id="route_list_table" width="500" border="0" cellspacing="0" cellpadding="0">
+										<tr>
+											<td height="30" align="center" bgcolor="#CCCCCC">序号</td>
+											<td align="center" bgcolor="#CCCCCC">名称</td>
+											<td align="center" bgcolor="#CCCCCC">操作</td>
+										</tr>
 
-									<tr>
-										<td height="30" align="center">
-										<input type="text" size="2" value="1" />
-										</td>
-										<td align="center">
-										<input type="text" name="brief_title" />
-										</td>
-										<td align="center">
-										<input type="button" id="btn_deltr" onclick="deltr()" value="删除">
-										</td>
-									</tr>
+										<tr>
+											<td height="30" align="center">
+											<input type="text" size="2" value="1" />
+											</td>
+											<td align="center">
+											<input type="text" name="brief_title" />
+											</td>
+											<td align="center">
+											<input type="button" id="btn_deltr" onclick="deltr()" value="删除">
+											</td>
+										</tr>
 
-								</table>
-							</div>
+									</table>
+								</div>
 							</article>
 							<article class="grid_4">
 								<div class="indent-top">
@@ -97,7 +97,6 @@
 										<div class="padding">
 											<h3 class="indent-bot">添加地点</h3>
 											<div>
-												<input type="button" id="btn_deltr" onclick="addStart()" value="添加">
 												<div>
 													<p>
 														起点:
@@ -107,7 +106,7 @@
 														重点:
 														<input id="add_end" type="text" name="lname" />
 													</p>
-													<input type="submit" value="Submit" onclick="addSave()"/>
+													<input type="submit" value="保存" onclick="addSave()"/>
 												</div>
 											</div>
 										</div>
@@ -155,13 +154,27 @@
 		</script>
 		<script type="text/javascript">
 			/**
+			 * 路线类
+			 */
+			// function route{
+			// this.id = -1;
+			// this.startName = '';
+			// this.endName = '';
+			// }
+
+			/**
 			 * 路线列表记录数
 			 */
 			var count = 0;
-			
+
+			/**
+			 *
+			 */
+			//var routelist = new Array();
+
 			/**
 			 * 初始化页面
-			 */ 
+			 */
 			function init() {
 				initRouteListBrief();
 				initMap();
@@ -183,11 +196,17 @@
 							if (jsonO.route[i] == null) {
 								break;
 							} else {
+								// var jsr = route();
+								// jsr.id = jsonO.route[i].id;
+								// jsr.startName = jsonO.route[i].from_title;
+								// jsr.endName = jsonO.route[i].to_title;
+								// routelist.push(jsr);
+
 								add_row_value(jsonO.route[i].from_title + " - " + jsonO.route[i].to_title);
 							}
 							i++;
 						}
-						//$("#route_list_table").find("tr:eq(1)").hide();
+						$("#route_list_table").find("tr:eq(1)").hide();
 					}
 				});
 			}
@@ -209,7 +228,7 @@
 								break;
 							} else {
 								var from = initPoint(jsonO.route[i].from_lng, jsonO.route[i].from_lat);
-								
+
 								var to = initPoint(jsonO.route[i].to_lng, jsonO.route[i].to_lat);
 								drawLine(from, to);
 							}
@@ -218,7 +237,7 @@
 					}
 				});
 			}
-			
+
 			/**
 			 * Ajax保存路线
 			 */
@@ -227,7 +246,29 @@
 					type : "GET",
 					url : "/save_simpleroute/",
 					dataType : "json",
-					data: paradata,
+					data : paradata,
+					success : function(json) {
+						var jsonO = eval("(" + json + ")");
+						if (jsonO.route[0] == null) {
+							return;
+						} else {
+							var from = initPoint(jsonO.route[0].from_lng, jsonO.route[0].from_lat);
+							var to = initPoint(jsonO.route[0].to_lng, jsonO.route[0].to_lat);
+							drawLine(from, to);
+						}
+					}
+				});
+			}
+
+			/**
+			 * Ajax删除路线
+			 */
+			function deleteRoute(paradata) {
+				$.ajax({
+					type : "GET",
+					url : "/delete_simpleroute/",
+					dataType : "json",
+					data : paradata,
 					success : function(json) {
 						;
 					}
@@ -239,7 +280,7 @@
 				//在表格后面添加一行
 				$("tr:last td input:first").val(++count);
 				//改变添加的行的ID值。
-			};
+			}
 
 			/**
 			 * 对路线列表添加一行
@@ -251,7 +292,7 @@
 				//在表格后面添加一行
 				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").find("td:eq(0)").text(count);
 				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").find("td:eq(1)").text(value);
-			};
+			}
 
 			/**
 			 * 对路线列表删除一行
@@ -261,37 +302,48 @@
 				if (length <= 2) {
 					alert("至少保留一行");
 				} else {
+					var text = $("tr").eq(count + 1).find("td:eq(1)").text();
+
+					var startname = text.split(" - ")[0];
+					var endname = text.split(" - ")[1];
+					var paradata = {
+						"startName" : startname,
+						"endName" : endname
+					};
+					deleteRoute(paradata);
+
 					$("tr:last").remove();
 					count--;
 				}
 			}
 
-			function addStart() {
-			}
-
 			/**
-			 * 保存一条路线 
+			 * 保存一条路线
 			 */
 			function addSave() {
 				var startname = $("#add_start").attr("value");
 				var endname = $("#add_end").attr("value");
 				// 展示到表格上
 				add_row_value(startname + " - " + endname);
-				
-				var paradata =  { "startName": startname, "endName": endname };
+
+				var paradata = {
+					"startName" : startname,
+					"endName" : endname
+				};
 				saveRoute(paradata);
 			}
 
 			////////////////////////////////////////////////////////////
 			// 地图相关
-			
+
 			/**
-			 * Baidu地图对象 
+			 * Baidu地图对象
 			 */
-			var map;
-			
+			var
+			map;
+
 			/**
-			 * 初始化地图 
+			 * 初始化地图
 			 */
 			function initMap() {
 				map = new BMap.Map("mapcontainer");
@@ -333,11 +385,11 @@
 				//drawLine(bjPoint, new BMap.Point(116.404, 39.915));
 				//drawLine(new BMap.Point(126.404, 39.915), new BMap.Point(116.404, 39.915));
 
-// test codes
+				// test codes
 				// var polyline1 = new BMap.Polyline([new BMap.Point(118.70718912023, 40.004529004226), new BMap.Point(118.18703339943, 39.636668880397)], {
-					// strokeColor : "blue",
-					// strokeWeight : 3,
-					// strokeOpacity : 0.5
+				// strokeColor : "blue",
+				// strokeWeight : 3,
+				// strokeOpacity : 0.5
 				// });
 				// map.addOverlay(polyline1);
 			}
@@ -361,6 +413,7 @@
 					strokeOpacity : 0.5
 				});
 				map.addOverlay(polyline);
+
 			}
 
 		</script>

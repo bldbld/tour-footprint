@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from tourfp_web.views import web_index, web_reg, web_login, web_logout, web_createmap, web_help
 from tourfp_map.views import showmap, show_add_tourset, show_add_place, show_add_trip, show_add_route, show_add_route_text
-from tourfp_simplemap.views import get_simpleroute_list, get_simpleroute_list_line, save_simpleroute
+from tourfp_simplemap.views import get_simpleroute_list, get_simpleroute_list_line, save_simpleroute, delete_simpleroute
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -37,4 +37,5 @@ urlpatterns = patterns('',
     url(r'^get_simpleroute_list/', get_simpleroute_list, name='get_simpleroute_list'),
     url(r'^get_simpleroute_list_line/', get_simpleroute_list_line, name='get_simpleroute_list_line'),
     url(r'^save_simpleroute/', save_simpleroute, name='save_simpleroute'),
+    url(r'^delete_simpleroute/', delete_simpleroute, name='delete_simpleroute'),
 )
