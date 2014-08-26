@@ -5,6 +5,7 @@
 		<meta charset="utf-8">
 		{% load staticfiles %}
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fci7iKfiurBcqTSeXEm0lGtw"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.js"></script>
 
 	</head>
 	<body id="page1" onload = "init()">
@@ -161,6 +162,8 @@
 			// this.startName = '';
 			// this.endName = '';
 			// }
+			
+			function 
 
 			/**
 			 * 路线列表记录数
@@ -251,6 +254,14 @@
 						var jsonO = eval("(" + json + ")");
 						if (jsonO.route[0] == null) {
 							return;
+						} else if (jsonO.route[0].has_error != null) {
+							if (jsonO.route[0].has_error == "1") {
+								alert("您输入的城市名看起来不太对，您再检查下吧");
+								return;
+							} else {
+								alert("您输入的城市名看起来不太对，您再检查下吧");
+								return;
+							}
 						} else {
 							var from = initPoint(jsonO.route[0].from_lng, jsonO.route[0].from_lat);
 							var to = initPoint(jsonO.route[0].to_lng, jsonO.route[0].to_lat);
@@ -407,13 +418,27 @@
 			}
 
 			function drawLine(start, end) {
-				var polyline = new BMap.Polyline([start, end], {
+				// var polyline = new BMap.Polyline([start, end], {
+				var polyline = new BMapLib.CurveLine([start, end], {
 					strokeColor : "blue",
 					strokeWeight : 3,
 					strokeOpacity : 0.5
 				});
 				map.addOverlay(polyline);
-
+				//polyline.enableEditing();
+				//map.removeOverlay(polyline);
+				var markerStart = new BMap.Marker(start, {
+					icon : new BMap.Icon('http://api.map.baidu.com/library/CurveLine/1.5/src/circle.png', new BMap.Size(16, 16)),
+					enableDragging : false,
+					raiseOnDrag : false
+				});
+				map.addOverlay(markerStart);
+				var markerEnd = new BMap.Marker(end, {
+					icon : new BMap.Icon('http://api.map.baidu.com/library/CurveLine/1.5/src/circle.png', new BMap.Size(16, 16)),
+					enableDragging : false,
+					raiseOnDrag : false
+				});
+				map.addOverlay(markerEnd);
 			}
 
 		</script>
