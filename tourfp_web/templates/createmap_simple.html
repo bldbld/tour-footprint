@@ -155,25 +155,34 @@
 		</script>
 		<script type="text/javascript">
 			/**
-			 * 路线类
+			 * 点类
 			 */
-			// function route{
-			// this.id = -1;
-			// this.startName = '';
-			// this.endName = '';
-			// }
-			
-			function 
+			function TFPoint(ptitle, plng, plat) {
+				var title = ptitle;
+				//经度
+				var lng = plng;
+				//纬度
+				var lat = plat;
+			}
 
 			/**
-			 * 路线列表记录数
+			 * 路线类
 			 */
-			var count = 0;
+			function TFRoute(pid, pfrom_title, pfrom_lng, pfrom_lat, pto_title, pto_lng, pto_lat) {
+				var id = pid;
+				var from = new TFPoint(pfrom_title, pfrom_lng, pfrom_lat);
+				var to = new TFPoint(pto_title, pto_lng, pto_lat);
+			}
 
 			/**
 			 *
 			 */
-			//var routelist = new Array();
+			var routelist = new Array();
+
+			/**
+			 * 路线列表记录数(用于表格)
+			 */
+			var count = 0;
 
 			/**
 			 * 初始化页面
@@ -230,10 +239,17 @@
 							if (jsonO.route[i] == null) {
 								break;
 							} else {
+								/* 画地图 */
 								var from = initPoint(jsonO.route[i].from_lng, jsonO.route[i].from_lat);
-
 								var to = initPoint(jsonO.route[i].to_lng, jsonO.route[i].to_lat);
 								drawLine(from, to);
+
+								/* 画表格*/
+								add_row_value(jsonO.route[i].from_title + " - " + jsonO.route[i].to_title);
+								
+								/*
+								 *保存变量
+								 */
 							}
 							i++;
 						}
