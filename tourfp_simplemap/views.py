@@ -44,9 +44,9 @@ def get_simpleroute_list(request):
 # 保存一条路线
 def save_simpleroute(request):
     startName = request.GET.get("startName")
-    # print(startName)
+    print(startName)
     endName = request.GET.get("endName")
-    # print(endName)
+    print(endName)
     # startPoint = SimplePoint()
     # endPoint = SimplePoint()
     startPoint = getCityPlaceByBaidu(startName);
@@ -66,15 +66,15 @@ def save_simpleroute(request):
     # print(sr.to_json_line())
     sr.save()
     json_str = "{'route':[" + sr.to_json_line() + ']}'
+    print(json_str)
     return HttpResponse(json.dumps(json_str, ensure_ascii=False))  
 
 ################################################################################
 # 删除一条路线
 def delete_simpleroute(request):
-    startName = request.GET.get("startName")
-    endName = request.GET.get("endName")
-    print(startName)
-    route_list_q = SimpleRoute.objects.filter(owner=request.user, from_title=startName, to_title=endName)
+    routeid = request.GET.get("routeid")
+    print(routeid)
+    route_list_q = SimpleRoute.objects.filter(owner=request.user, id=routeid)
     print (route_list_q)
     for item_q in route_list_q:
         item_q.delete()

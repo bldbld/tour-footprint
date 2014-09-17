@@ -75,7 +75,7 @@
 											<td height="30" align="center" bgcolor="#CCCCCC">序号</td>
 											<td align="center" bgcolor="#CCCCCC">名称</td>
 											<td align="center" bgcolor="#CCCCCC">操作</td>
-											<td align="center" bgcolor="#CCCCCC" hidden = "true" width="1"></td>
+											<td align="center" bgcolor="#CCCCCC" hidden = "true"></td>
 										</tr>
 
 										<tr>
@@ -86,8 +86,11 @@
 											<input type="text" name="brief_title" />
 											</td>
 											<td align="center"  name = "newtd">
-											<input type="button"  name='getinfo' value="删除" >
-											<!--onclick="deltr()" --></input></td><td hidden = "true" width="1"></td>
+											<input type="button"  id="getinfo" name='getinfo' onclick="deltr(this)"  value="删除" />
+											<!--onclick="deltr()" --></td>
+											<td>
+											<input type="text" size="2" value="1"  hidden = "true"/>
+											</td>
 										</tr>
 
 									</table>
@@ -155,36 +158,28 @@
 			Cufon.now();
 		</script>
 		<script type="text/javascript">
-			$(document).ready(function() {
-				var trs = $("table#route_list_table tr");
-				$("input[name='getinfo']").click(function() {
-					alert(1);
-					var index = trs.index($(this).closest("tr"));
-					alert(index);
-				});
-			})
 			/**
 			 * 点类
 			 */
 			function TFPoint(ptitle, plng, plat) {
-				var title = ptitle;
+				this.title = ptitle;
 				/**
 				 * 经度
 				 */
-				var lng = plng;
+				this.lng = plng;
 				/**
 				 * 纬度
 				 */
-				var lat = plat;
+				this.lat = plat;
 			}
 
 			/**
 			 * 路线类
 			 */
 			function TFRoute(pid, pfrom_title, pfrom_lng, pfrom_lat, pto_title, pto_lng, pto_lat) {
-				var id = pid;
-				var from = new TFPoint(pfrom_title, pfrom_lng, pfrom_lat);
-				var to = new TFPoint(pto_title, pto_lng, pto_lat);
+				this.id = pid;
+				this.from = new TFPoint(pfrom_title, pfrom_lng, pfrom_lat);
+				this.to = new TFPoint(pto_title, pto_lng, pto_lat);
 			}
 
 			/**
@@ -193,24 +188,30 @@
 			var routelist = new Array();
 
 			/**
+			 * Routelist，刪除掉元素
+			 */
+			function removeRouteFromRouteList(routeid) {
+				for (var i = 0; i < routelist.length; i++) {
+					if (routelist[i].id == routeid) {
+						routelist.splice(i, 1);
+					}
+				}
+			}
+
+			/**
 			 * 用于地图显示的路线类
 			 */
 			function TFMapShowRoute(pid, pline, pstart, pend) {
-				var id = pid;
-				var line = pline;
-				var pstart = pstart;
-				var pend = pend;
+				this.id = pid;
+				this.line = pline;
+				this.start = pstart;
+				this.end = pend;
 			}
 
 			/**
 			 * 路线列表地图元素
 			 */
 			var mapShowRoutelist = new Array();
-
-			/**
-			 * 路线列表记录数(用于表格)
-			 */
-			var count = 0;
 
 			/**
 			 * 初始化页面
@@ -267,25 +268,7 @@
 							if (jsonO.route[i] == null) {
 								break;
 							} else {
-								var jid = jsonO.route[i].id;
-								var jfrom_title = jsonO.route[i].from_title;
-								var jfrom_lng = jsonO.route[i].from_lng;
-								var jfrom_lat = jsonO.route[i].from_lat;
-								var jto_title = jsonO.route[i].to_title;
-								var jto_lng = jsonO.route[i].to_lng;
-								var jto_lat = jsonO.route[i].to_lat;
-
-								/* 画地图 */
-								var from = initPoint(jfrom_lng, jfrom_lat);
-								var to = initPoint(jto_lng, jto_lat);
-								drawLine(jid, from, to);
-
-								/* 画表格*/
-								add_row_value(jfrom_title + " - " + jto_title);
-
-								/* 保存变量 */
-								var route = new TFRoute(jid, jfrom_title, jfrom_lng, jfrom_lat, jto_title, jto_lng, jto_lat);
-								routelist.push(route);
+								addRoute(jsonO.route[i]);
 							}
 							i++;
 						}
@@ -306,6 +289,7 @@
 					success : function(json) {
 						var jsonO = eval("(" + json + ")");
 						if (jsonO.route[0] == null) {
+							alert("您输入的城市名看起来不太对，您再检查下吧");
 							return;
 						} else if (jsonO.route[0].has_error != null) {
 							if (jsonO.route[0].has_error == "1") {
@@ -316,9 +300,7 @@
 								return;
 							}
 						} else {
-							var from = initPoint(jsonO.route[0].from_lng, jsonO.route[0].from_lat);
-							var to = initPoint(jsonO.route[0].to_lng, jsonO.route[0].to_lat);
-							drawLine(from, to);
+							addRoute(jsonO.route[0]);
 						}
 					}
 				});
@@ -339,6 +321,31 @@
 				});
 			}
 
+			/**
+			 * 增加路线
+			 */
+			function addRoute(routedata) {
+				var jid = routedata.id;
+				var jfrom_title = routedata.from_title;
+				var jfrom_lng = routedata.from_lng;
+				var jfrom_lat = routedata.from_lat;
+				var jto_title = routedata.to_title;
+				var jto_lng = routedata.to_lng;
+				var jto_lat = routedata.to_lat;
+
+				/* 画地图 */
+				var from = initPoint(jfrom_lng, jfrom_lat);
+				var to = initPoint(jto_lng, jto_lat);
+				drawLine(jid, from, to);
+
+				/* 保存JS变量 */
+				var route = new TFRoute(jid, jfrom_title, jfrom_lng, jfrom_lat, jto_title, jto_lng, jto_lat);
+				routelist.push(route);
+				
+				/* 画表格*/
+				add_row_value(jfrom_title + " - " + jto_title, jid);
+			}
+
 			function add_row() {
 				$("#route_list_table").find("tr:eq(1)").clone().appendTo("#route_list_table");
 				//在表格后面添加一行
@@ -351,19 +358,44 @@
 			 * @param value 展示信息
 			 */
 			function add_row_value(value, id) {
+				var count = routelist.length + 1;
 				// 从第一行复制出来
 				$("#route_list_table").find("tr:eq(" + (1) + ")").clone().appendTo("#route_list_table");
-				count++;
 				//在表格后面添加一行
-				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").find("td:eq(0)").text(count);
-				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").find("td:eq(1)").text(value);
-				$("#route_list_table").find("tr:eq(" + (count + 1) + ")").find("td:eq(4)").text(id);
+				$("#route_list_table").find("tr:eq(" + count + ")").find("td:eq(0)").text(count - 1);
+				$("#route_list_table").find("tr:eq(" + count + ")").find("td:eq(1)").text(value);
 				// 记录ID
+				$("#route_list_table").find("tr:eq(" + count + ")").find("td:eq(3)").text(id);
+				// 隐藏ID列
+				$("#route_list_table").find("tr:eq(" + count + ")").find("td:eq(3)").hide();
 			}
 
 			/**
 			 * 对路线列表删除一行
 			 */
+			function deltr(clickTd) {
+				if (!confirm("你确定要删除？")) {
+					return;
+				}
+				var tr = $(clickTd).parent().parent();
+				var deleterouteid = tr.find("td:eq(3)").text();
+
+				// 表格刪除
+				tr.remove();
+
+				// 服务器删除
+				var paradata = {
+					"routeid" : deleterouteid
+				};
+				deleteRoute(paradata);
+
+				// JS数据删除
+				removeRouteFromRouteList(deleterouteid);
+
+				// 地图控件删除
+				deleteLine(deleterouteid);
+			}
+
 			// function deltr() {
 			// alert($("tr").find("td:eq(1)").text());
 			// if (!confirm("你确定要删除？")) {
@@ -404,9 +436,6 @@
 			function addSave() {
 				var startname = $("#add_start").attr("value");
 				var endname = $("#add_end").attr("value");
-				// 展示到表格上
-				add_row_value(startname + " - " + endname);
-
 				var paradata = {
 					"startName" : startname,
 					"endName" : endname
@@ -517,10 +546,20 @@
 				mapShowRoutelist.push(mapshow);
 			}
 
-			function deleteLine() {
-
+			/**
+			 * 在地图上删除线
+			 */
+			function deleteLine(routeid) {
+				for (var i = 0; i < mapShowRoutelist.length; i++) {
+					if (mapShowRoutelist[i].id == routeid) {
+						alert('get');
+						map.removeOverlay(mapShowRoutelist[i].line);
+						map.removeOverlay(mapShowRoutelist[i].start);
+						map.removeOverlay(mapShowRoutelist[i].end);
+						mapShowRoutelist.splice(i, 1);
+					}
+				}
 			}
-
 		</script>
 	</body>
 </html>

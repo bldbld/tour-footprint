@@ -20,6 +20,8 @@ def getCityPlaceByBaidu(city_name):
     result = SimplePoint()
     result.lat = root.find('result').find('location').find('lat').text
     result.lng = root.find('result').find('location').find('lng').text
+    print(result.lat)
+    print(result.lng)
     return result
 
 # 通过城市名称Baidu GEO XML数据
@@ -31,6 +33,5 @@ def getGeoCoderDataByBaidu(city_name):
     print (text)
     return text
 
-    
 if __name__ == '__main__':
     getCityPlaceByBaidu('百度大厦')
