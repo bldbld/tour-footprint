@@ -6,10 +6,12 @@ from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from tourfp_simplemap.models import SimpleRoute
 from tourfp_simplemap.lbsservice import getCityPlaceByBaidu, SimplePoint
+from util.CoordinateDataUtil import CoordinateDataUtil
 import json
 
 ################################################################################
 # 显示地图
+# 废弃
 def showsimplemap (request):
     t = get_template('baidu/map.html')
     # tourlist = tour.objects.all()
@@ -20,6 +22,7 @@ def showsimplemap (request):
 
 ################################################################################
 # 获取路线列表JSON，用于显示地图
+# 废弃
 def get_simpleroute_list_line(request):
     route_list_q = SimpleRoute.objects.filter(owner=request.user)
     json_str = "{'route':["
@@ -82,8 +85,14 @@ def delete_simpleroute(request):
 
 ################################################################################
 # 校验城市名是否重复，及是否存在
+# 废弃
 def check_cityname(request):
     startName = request.GET.get("startName")
     endName = request.GET.get("endName")
-    
-    
+
+################################################################################
+# 提供录入建议
+def match_text(request):
+    text = request.GET.get("text")
+    util = CoordinateDataUtil.instance()    
+    return HttpResponse(json.dumps(util.match(text) , ensure_ascii=False))  
