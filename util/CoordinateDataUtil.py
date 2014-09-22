@@ -4,6 +4,7 @@ Created on 2014-9-18
 @author: ballad
 '''
 from django.core.files import File
+from util.ChinaCitiesData import ChinaCitiesData
 
 # 坐标服务工具类
 class CoordinateDataUtil(object):
@@ -21,7 +22,7 @@ class CoordinateDataUtil(object):
     
     # 初始化数据
     def initData(self):
-        ft = open("C:/Users/ballad/Git/tour-footprint/util/chinadata.csv")
+        ft = open("/tour-footprint/util/chinadata.csv")
         f = File(ft)
         line = f.readline() # 调用文件的 readline()方法
         while line:
@@ -34,11 +35,23 @@ class CoordinateDataUtil(object):
                     print('hasnone' + linedata[2])
         f.close()
         
+    # 初始化数据
+    def initDataStr(self):
+        chinaData = ChinaCitiesData()
+        chinaDatas = chinaData.getData().split(';')
+        for line in chinaDatas:
+            #print (line) 
+            linedata = line.split(',')
+            if len(linedata) == 5:
+                self.placeList.append(linedata[2])
+                if len(linedata[3]) == 0:
+                    print('hasnone' + linedata[2])
+        
     @classmethod    
     def instance(cls):    
         if not hasattr(cls, "_instance"):    
             cls._instance = cls()    
-            cls._instance.initData()
+            cls._instance.initDataStr()
         return cls._instance    
   
     @classmethod    
@@ -54,9 +67,14 @@ class CoordinateDataUtil(object):
     # 一个基本匹配方法，TODO 后续完善
     def match(self, text):
         returnList = []
+        count = 0
         for place in self.placeList:
             if place.startswith(text):
+                print('match')
                 returnList.append(place)
+                count = count + 1
+            if count >= 10: # 最多提供10个
+                break
         return returnList
 
 print (CoordinateDataUtil.initialized()  )  

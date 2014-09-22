@@ -94,5 +94,7 @@ def check_cityname(request):
 # 提供录入建议
 def match_text(request):
     text = request.GET.get("text")
-    util = CoordinateDataUtil.instance()    
-    return HttpResponse(json.dumps(util.match(text) , ensure_ascii=False))  
+    util = CoordinateDataUtil.instance()
+    result = util.match(text) 
+    print (result[0])
+    return HttpResponse(json.dumps(result , ensure_ascii=False))  
