@@ -45,7 +45,42 @@
 						<article class="grid_4">
 							<div class="indent-top">
 								<div class="box">
-
+									选择显示效果：
+									<select id = "displayStyleSelector">
+										<option value ="point">地点</option>
+										<option value ="line">直线足迹</option>
+										<option value ="curveLine">曲线足迹</option>
+									</select>
+								</div>
+								<div class="box">
+									<!-- 百度分享控件 -->
+									<div class="bdsharebuttonbox">
+										<a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a>
+									</div>
+									<script>
+										window._bd_share_config = {
+											"common" : {
+												"bdSnsKey" : {},
+												"bdText" : "",
+												"bdMini" : "2",
+												"bdPic" : "",
+												"bdStyle" : "0",
+												"bdSize" : "16"
+											},
+											"share" : {},
+											"image" : {
+												"viewList" : ["qzone", "tsina", "tqq", "renren", "weixin"],
+												"viewText" : "分享到：",
+												"viewSize" : "16"
+											},
+											"selectShare" : {
+												"bdContainerClass" : null,
+												"bdSelectMiniList" : ["qzone", "tsina", "tqq", "renren", "weixin"]
+											}
+										};
+										with (document)
+										0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+									</script>
 								</div>
 							</div>
 						</article>
@@ -60,12 +95,11 @@
 			<div class="ic">
 				More Website Templates @ <a href="http://www.mycodes.net/" >网页模板</a> - February 06, 2012!
 			</div>
-
 			<div class="main">
 				<div class="container_12">
 					<div class="wrapper p3">
+						{%if request.user.is_authenticated %}
 						<div id="mapcontainer" / ></div>
-
 						<div class="wrapper">
 							<article class="grid_8">
 								<h2>路线列表：</h2>
@@ -112,7 +146,10 @@
 													</p>
 													<p>
 														重点:
-														<input id="add_end" type="text" name="lname" />
+														<input id="add_to" type="text" name="lname" />
+														<div class="search_suggest" id="add_to_search_suggest">
+															<ul></ul>
+														</div>
 													</p>
 													<input type="submit" value="保存" onclick="addSave()"/>
 												</div>
@@ -122,6 +159,8 @@
 								</div>
 							</article>
 						</div>
+
+						{%endif %}
 					</div>
 				</div>
 		</section>
@@ -161,10 +200,12 @@
 			Cufon.now();
 		</script>
 		<script type="text/javascript">
-			//实现搜索输入框的输入提示js类
-			function oSearchSuggest(searchFuc) {
-				var input = $('#add_start');
-				var suggestWrap = $('#add_start_search_suggest');
+			/**
+			 * 实现搜索输入框的输入提示js类
+			 */
+			function oSearchSuggest(searchFuc, inputId, suggestWrapId) {
+				var input = $(inputId);
+				var suggestWrap = $(suggestWrapId);
 				var key = "";
 				var init = function() {
 					input.bind('keyup', sendKeyWord);
@@ -254,9 +295,10 @@
 			};
 
 			//实例化输入提示的JS,参数为进行查询操作时要调用的函数名
-			var searchSuggest = new oSearchSuggest(sendKeyWordToBack);
+			//起点
+			var searchSuggest = new oSearchSuggest(sendKeyWordToBack, '#add_start', '#add_start_search_suggest');
 
-			//这是一个模似函数，实现向后台发送ajax查询请求，并返回一个查询结果数据，传递给前台的JS,再由前台JS来展示数据。本函数由程序员进行修改实现查询的请求
+			//向后台发送ajax查询请求，并返回一个查询结果数据，传递给前台的JS,再由前台JS来展示数据。
 			//参数为一个字符串，是搜索输入框中当前的内容
 			function sendKeyWordToBack(keyword) {
 				var paradata = {
@@ -272,7 +314,33 @@
 							var data = json.toString();
 							var aData = data.split(",");
 							searchSuggest.dataDisplay(aData);
-						} 
+						}
+					}
+				});
+
+			}
+
+			//实例化输入提示的JS,参数为进行查询操作时要调用的函数名
+			//目的地
+			var searchSuggestTo = new oSearchSuggest(sendKeyWordToBackTo, '#add_to', '#add_to_search_suggest');
+
+			//向后台发送ajax查询请求，并返回一个查询结果数据，传递给前台的JS,再由前台JS来展示数据。
+			//参数为一个字符串，是搜索输入框中当前的内容
+			function sendKeyWordToBackTo(keyword) {
+				var paradata = {
+					"text" : keyword
+				};
+				$.ajax({
+					type : "GET",
+					url : "/match_text/",
+					dataType : "json",
+					data : paradata,
+					success : function(json) {
+						if (json != null) {
+							var data = json.toString();
+							var aData = data.split(",");
+							searchSuggestTo.dataDisplay(aData);
+						}
 					}
 				});
 
@@ -341,6 +409,9 @@
 				// initRouteListBrief();
 				initMap();
 				initRouteList();
+				
+				
+				initDisplayStyle();
 			}
 
 			/**
@@ -419,6 +490,17 @@
 						}
 						$("#route_list_table").find("tr:eq(1)").hide();
 					}
+				});
+			}
+
+			/**
+			 * 切换风格
+			 */
+			function initDisplayStyle() {
+				var displayStyle = $('#displayStyleSelector');
+				displayStyle.onchange(function(){ 
+				var selectText = displayStyle.find("option:selected").text();
+				alert(selectText);
 				});
 			}
 
