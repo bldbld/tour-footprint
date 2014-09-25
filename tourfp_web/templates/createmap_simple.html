@@ -46,7 +46,7 @@
 							<div class="indent-top">
 								<div class="box">
 									选择显示效果：
-									<select id = "displayStyleSelector">
+									<select id = "displayStyleSelector" onchange=switchDisplayStyle(this.value)>
 										<option value ="point">地点</option>
 										<option value ="line">直线足迹</option>
 										<option value ="curveLine">曲线足迹</option>
@@ -348,6 +348,11 @@
 		</script>
 		<script type="text/javascript">
 			/**
+			 * 展示风格  curveLine line point
+			 */
+			var displayStyle = "curveLine";
+			
+			/**
 			 * 点类
 			 */
 			function TFPoint(ptitle, plng, plat) {
@@ -390,11 +395,12 @@
 			/**
 			 * 用于地图显示的路线类
 			 */
-			function TFMapShowRoute(pid, pline, pstart, pend) {
+			function TFMapShowRoute(pid, pline, pstart, pend, pcurveLine) {
 				this.id = pid;
 				this.line = pline;
 				this.start = pstart;
 				this.end = pend;
+				this.curveLine = pcurveLine;
 			}
 
 			/**
@@ -409,9 +415,6 @@
 				// initRouteListBrief();
 				initMap();
 				initRouteList();
-				
-				
-				initDisplayStyle();
 			}
 
 			/**
@@ -494,17 +497,6 @@
 			}
 
 			/**
-			 * 切换风格
-			 */
-			function initDisplayStyle() {
-				var displayStyle = $('#displayStyleSelector');
-				displayStyle.onchange(function(){ 
-				var selectText = displayStyle.find("option:selected").text();
-				alert(selectText);
-				});
-			}
-
-			/**
 			 * Ajax保存路线
 			 */
 			function saveRoute(paradata) {
@@ -547,6 +539,43 @@
 					}
 				});
 			}
+
+			/**
+			 * 切换风格
+			 */
+			function switchDisplayStyle(value) {
+				displayStyle = value;
+				refreshMap();
+			}
+			
+			function refreshMap(){
+				for (var i = 0; i < mapShowRoutelist.length; i++) {
+					var mapShowRouteVar = mapShowRoutelist[i];
+					map.removeOverlay(mapShowRouteVar.line);
+					map.removeOverlay(mapShowRouteVar.start);
+					map.removeOverlay(mapShowRouteVar.end);;
+					map.removeOverlay(mapShowRouteVar.curveLine);
+					if (displayStyle == "point")
+					{
+					map.addOverlay(mapShowRouteVar.start);
+					map.addOverlay(mapShowRouteVar.end);;
+					} 
+					else if (displayStyle == "line")
+					{
+						
+					map.addOverlay(mapShowRouteVar.line);
+					map.addOverlay(mapShowRouteVar.start);
+					map.addOverlay(mapShowRouteVar.end);;
+					}
+					else 
+					{
+					map.addOverlay(mapShowRouteVar.start);
+					map.addOverlay(mapShowRouteVar.end);;
+					map.addOverlay(mapShowRouteVar.curveLine);
+					}
+				}
+			}
+			
 
 			/**
 			 * 增加路线
@@ -748,12 +777,18 @@
 			 */
 			function drawLine(id, start, end) {
 				// var polyline = new BMap.Polyline([start, end], {
-				var polyline = new BMapLib.CurveLine([start, end], {
+				var polyline = new BMap.Polyline([start, end], {
 					strokeColor : "blue",
 					strokeWeight : 3,
 					strokeOpacity : 0.5
 				});
-				map.addOverlay(polyline);
+				
+				var curveline = new BMapLib.CurveLine([start, end], {
+					strokeColor : "blue",
+					strokeWeight : 3,
+					strokeOpacity : 0.5
+				});
+				map.addOverlay(curveline);
 				//polyline.enableEditing();
 				//map.removeOverlay(polyline);
 				var markerStart = new BMap.Marker(start, {
@@ -769,7 +804,7 @@
 				});
 				map.addOverlay(markerEnd);
 
-				var mapshow = new TFMapShowRoute(id, polyline, markerStart, markerEnd);
+				var mapshow = new TFMapShowRoute(id, polyline, markerStart, markerEnd, curveline);
 				mapShowRoutelist.push(mapshow);
 			}
 
@@ -779,10 +814,10 @@
 			function deleteLine(routeid) {
 				for (var i = 0; i < mapShowRoutelist.length; i++) {
 					if (mapShowRoutelist[i].id == routeid) {
-						alert('get');
 						map.removeOverlay(mapShowRoutelist[i].line);
 						map.removeOverlay(mapShowRoutelist[i].start);
 						map.removeOverlay(mapShowRoutelist[i].end);
+						map.removeOverlay(mapShowRoutelist[i].curveLine);
 						mapShowRoutelist.splice(i, 1);
 					}
 				}
