@@ -14,15 +14,17 @@
 					<figure class="img-indent-r"><img src="images/page1-img1.png" alt="" />
 					</figure>
 					<div class="extra-wrap indent">
-						<form action="" method="post">
+						<form action="/html_login_submit/" method="post">
 							{% csrf_token %}
-							<table border="0" cellpadding="0" >
-								{{form.as_table}}
-							</table>
-							<p>
-								<input type="submit" value="登录"/>
-							</p>
+							用户：
+							<input type="text" name="username">
+							<br>
+							密码：
+							<input type="password" name="password">
+							<br>
+							<input type="submit" value="登录" >
 						</form>
+
 						<a href="{%url 'reg'%}">还没有账号？快来注册</a><a href="{%url 'index'%}">返回首页</a>
 
 						</p>
@@ -84,6 +86,25 @@
 		</footer>
 		<script type="text/javascript">
 			Cufon.now();
+		</script>
+		<script type="text/javascript">
+			function submitLogin() {
+				var paradata = {
+					"username" : "bld",
+					"password" : "123456"
+				};
+				alert(1);
+				$.ajax({
+					type : "GET",
+					url : "/html_login_submit/",
+					dataType : "json",
+					data : paradata,
+					success : function(json) {
+						;
+					}
+				});
+				alert(2);
+			}
 		</script>
 	</body>
 </html>

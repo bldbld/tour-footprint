@@ -351,7 +351,7 @@
 			 * 展示风格  curveLine line point
 			 */
 			var displayStyle = "curveLine";
-			
+
 			/**
 			 * 点类
 			 */
@@ -417,6 +417,9 @@
 				initRouteList();
 			}
 
+			////////////////////////////////////////////////////////////////////////////////
+			// Ajax通信方法 START
+			
 			/**
 			 * Ajax获取路线列表（展示表格）
 			 */
@@ -540,6 +543,8 @@
 				});
 			}
 
+			////////////////////////////////////////////////////////////////////////////////
+			// Ajax通信方法 END
 			/**
 			 * 切换风格
 			 */
@@ -547,35 +552,34 @@
 				displayStyle = value;
 				refreshMap();
 			}
-			
-			function refreshMap(){
+
+			/**
+			 * 刷新地图，用于切换风格时，不执行Ajax通信。
+			 */
+			function refreshMap() {
 				for (var i = 0; i < mapShowRoutelist.length; i++) {
 					var mapShowRouteVar = mapShowRoutelist[i];
-					map.removeOverlay(mapShowRouteVar.line);
 					map.removeOverlay(mapShowRouteVar.start);
-					map.removeOverlay(mapShowRouteVar.end);;
+					map.removeOverlay(mapShowRouteVar.end);
+					map.removeOverlay(mapShowRouteVar.line);
 					map.removeOverlay(mapShowRouteVar.curveLine);
-					if (displayStyle == "point")
-					{
-					map.addOverlay(mapShowRouteVar.start);
-					map.addOverlay(mapShowRouteVar.end);;
-					} 
-					else if (displayStyle == "line")
-					{
-						
-					map.addOverlay(mapShowRouteVar.line);
-					map.addOverlay(mapShowRouteVar.start);
-					map.addOverlay(mapShowRouteVar.end);;
-					}
-					else 
-					{
-					map.addOverlay(mapShowRouteVar.start);
-					map.addOverlay(mapShowRouteVar.end);;
-					map.addOverlay(mapShowRouteVar.curveLine);
+					if (displayStyle == "point") {
+						// 地点
+						map.addOverlay(mapShowRouteVar.start);
+						map.addOverlay(mapShowRouteVar.end);
+					} else if (displayStyle == "line") {
+						// 曲线
+						map.addOverlay(mapShowRouteVar.start);
+						map.addOverlay(mapShowRouteVar.end);
+						map.addOverlay(mapShowRouteVar.line);
+					} else {
+						// 曲线
+						map.addOverlay(mapShowRouteVar.start);
+						map.addOverlay(mapShowRouteVar.end);
+						map.addOverlay(mapShowRouteVar.curveLine);
 					}
 				}
 			}
-			
 
 			/**
 			 * 增加路线
@@ -691,7 +695,7 @@
 			 */
 			function addSave() {
 				var startname = $("#add_start").attr("value");
-				var endname = $("#add_end").attr("value");
+				var endname = $("#add_to").attr("value");
 				var paradata = {
 					"startName" : startname,
 					"endName" : endname
@@ -782,7 +786,7 @@
 					strokeWeight : 3,
 					strokeOpacity : 0.5
 				});
-				
+
 				var curveline = new BMapLib.CurveLine([start, end], {
 					strokeColor : "blue",
 					strokeWeight : 3,

@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from tourfp_web.views import web_index, web_reg, web_login, web_logout, web_createmap, web_help
+from tourfp_web.views import web_index, web_reg, web_login, web_logout, web_createmap, web_help, html_login_submit, html_reg_submit
 from tourfp_map.views import showmap, show_add_tourset, show_add_place, show_add_trip, show_add_route, show_add_route_text
 from tourfp_simplemap.views import get_simpleroute_list, get_simpleroute_list_line, save_simpleroute, delete_simpleroute, match_text
 admin.autodiscover()
@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     # url(r'^$', 'tourfootprint.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    url(r'^$', web_index),
+    
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index/', web_index, name='index'),
     
@@ -21,8 +23,13 @@ urlpatterns = patterns('',
     url(r'^logout/', web_logout, name='logout'),
     url(r'^help/', web_help, name='help'),
     
+    url(r'^html_login_submit/', html_login_submit, name='html_login_submit'),
+    url(r'^html_reg_submit/', html_reg_submit, name='html_reg_submit'),
+    
+    
     # 创建地图 主页面
     url(r'^createmap/', web_createmap, name='createmap'),
+    url(r'^people/\w+/createmap/', web_createmap, name='people_createmap'),#\w  = [a-zA-Z0-9_]
     
     # 展示地图
     url(r'^showmap/', showmap, name='showmap'),

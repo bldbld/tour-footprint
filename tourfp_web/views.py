@@ -10,14 +10,15 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
+from django.core.context_processors import csrf
 
 # Create your views here.
 
 def web_index(request):
     template_var={}
-    template_var["w"]=_("欢迎您")
+    template_var["w"]=_("Welcome")
     if request.user.is_authenticated():     #判断用户是否已登录  
-        template_var["w"]=_("欢迎您 %s!")%request.user.username
+        template_var["w"]=_("Welcome %s!")%request.user.username
     else:     
         print('no')           #非登录用户将返回AnonymousUser对象  
     t = get_template('index.html')
@@ -64,6 +65,31 @@ def web_logout(request):
     auth_logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+# 使用HTML网页进行登录
+def html_login_submit(request):
+    '''登录'''
+    username = request.POST.get("username")
+    password = request.POST.get("password")
+    ret = _login(request, username, password)
+    template_var={}
+    if ret:
+        template_var["w"]=_("Welcome %s!")%request.user.username
+        #return render_to_response("index.html",template_var,context_instance=RequestContext(request))
+        return HttpResponseRedirect(reverse("index"))    
+    else: 
+        return render_to_response("login.html",context_instance=RequestContext(request))
+
+# 使用HTML网页进行注册
+def html_reg_submit(request):
+    '''注册'''
+    username = request.POST.get("username")
+    password = request.POST.get("password")
+    email = request.POST.get("email")
+    user = User.objects.create_user(username, email, password)
+    user.save()
+    _login(request, username, password)  # 注册完毕 直接登陆
+    return HttpResponseRedirect(reverse("index"))    
+
 def web_help(request):
     return 
 
@@ -76,6 +102,7 @@ def _login(request, username, password):
     '''登陆核心方法'''
     ret = False
     user = authenticate(username=username, password=password)
+    print(user)
     if user:
         if user.is_active:
             auth_login(request, user)
