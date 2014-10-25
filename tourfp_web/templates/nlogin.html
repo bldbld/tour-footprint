@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Bikers</title>
+		<meta charset="utf-8">
+		{% load staticfiles %}
+		<link href="{% static "tourfp_nweb/css/style.css" %}" rel="stylesheet" type="text/css" />
+	</head>
+
+	<body>
+		<div id="page">
+			{% include 'nbase.html' %}
+			<div id="body">
+				<div id="main">
+					<h2>Aenean tincidunt sgittis libero, quis sagittis tortor consequat sed aecenas luctus ultricies mauris</h2>
+					<div class="featured">
+						<!-- start of featured -->
+						<a href="about.htm"><img src="{% static "tourfp_nweb/images/home-biker.jpg" %}"  width="270" height="180" alt="Bikers Club" title="Bikers Club"></a>
+						<a href="about.htm"><img src="{% static "tourfp_nweb/images/home-bikers.jpg" %}" width="270" height="180" alt="Bikers Club" title="Bikers Club"></a>
+						<p>
+							This website template has been collect from <a href="http://www.cssmoban.com/" title="????">????</a> for you, for free. You can replace all this text with your own text.
+							You can remove any link to our website from this website template, you're free to use this website template without linking back to us.
+						</p>
+						<p>
+							Looking for more templates? Just browse through all our <a href="http://www.cssmoban.com/" title="????">中文</a> and find what you&acute;re looking for. But if you don&acute;t find any website template you can use, you can try our Free Web Design service and tell us all about it.
+						</p>
+					</div>
+					<!-- end of featured -->
+
+					<div class="section" >
+						<!-- srtart of gallery and article section -->
+						<div id="gallery">
+							<h3>Photo Gallery</h3>
+							<ul>
+								<li>
+									<a href="gallery.htm"><img src="{% static "tourfp_nweb/images/home-biker-thumbnail.jpg" %}"  width="125" height="80" alt="Bikers Club" title="Bikers Club"></a>
+								</li>
+								<li>
+									<a href="gallery.htm"><img src="{% static "tourfp_nweb/images/home-boys.jpg" %}"  width="125" height="80" alt="Bikers Club" title="Bikers Club"></a>
+								</li>
+								<li>
+									<a href="gallery.htm"><img src="{% static "tourfp_nweb/images/home-girls.jpg" %}"  width="125" height="80" alt="Bikers Club" title="Bikers Club"></a>
+								</li>
+								<li>
+									<a href="gallery.htm"><img src="{% static "tourfp_nweb/images/home-family.jpg" %}"  width="125" height="80" alt="Bikers Club" title="Bikers Club"></a>
+								</li>
+							</ul>
+							<a class="more" href="gallery.htm">View more &#187;</a>
+						</div>
+
+						<div id="events">
+							<h3>Events</h3>
+							<ul>
+								<li>
+									Aenean at risus quam, et semper nunc. Sed mollis arcu at augue facilisis a congue turpis
+								</li>
+								<li>
+									Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+								</li>
+								<li class="last">
+									Duis dui enim, gravida at hendrerit id, molestie eget quam. Phasellus posuere nunc vitae ipsum aliquam et lobortis
+								</li>
+							</ul>
+							<a class="more" href="events.htm">Read more &raquo;</a>
+						</div>
+					</div>
+					<!-- end of gallery and article section -->
+				</div>
+
+				<div id="sidebar">
+					<!-- start of sidebar -->
+					<ul>
+						<li>
+							<h3><a href="about.htm">Proin sollicitudin dignissim ligula sed vestibulum.</a></h3>
+							<p>
+								Vestibulum sed magna eu justo tempor facilisis sed ut felis. Ut vitae tortor neque, convallis lobortis enim.
+							</p>
+						</li>
+						<li>
+							<h3><a href="about.htm"> Quisque purus nisl, feugiat  vitae convallis eu</a></h3>
+							<p>
+								Nulla nunc magna, fringillavitae mattis insuscipitausto. Fusce laoreet, velit non feugiat laoreet, sem massa convallis tellus, et rutrum velit erat.
+							</p>
+						</li>
+						<li>
+							<h3><a href="about.htm">Nunc ullamcorper, velit quis  mattis eleifend </a></h3>
+							<p>
+								Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla tortor mauris, tempus in convallis in.
+							</p>
+						</li>
+					</ul>
+
+					<h3>联系我们</h3>
+					
+							<form action="/html_login_submit/" method="post">
+							{% csrf_token %}
+							用户：
+							<input type="text" name="username">
+							<br>
+							密码：
+							<input type="password" name="password">
+							<br>
+							<input type="submit" value="登录" >
+						</form>
+
+						<a href="{%url 'reg'%}">还没有账号？快来注册</a><a href="{%url 'index'%}">返回首页</a>
+						
+				</div>
+				<!-- end of sidebar -->
+			</div>
+			<!-- end of body wrapper -->
+		</div>
+		{% include 'nfooter.html' %}
+		<!-- end of footer part -->
+	</body>
+</html>

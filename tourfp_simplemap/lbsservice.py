@@ -5,6 +5,7 @@ Created on 2014-5-29
 @author: ballad
 '''
 import urllib
+from urlparse import urlparse
 from xml.etree import ElementTree
 from tourfp_simplemap.models import SimpleRoute
 
@@ -26,12 +27,22 @@ def getCityPlaceByBaidu(city_name):
 
 # 通过城市名称Baidu GEO XML数据
 def getGeoCoderDataByBaidu(city_name):
-    url = "http://api.map.baidu.com/geocoder/v2/?ak=fci7iKfiurBcqTSeXEm0lGtw&callback=renderOption&output=xml&address="+urllib.parse.quote(city_name)+urllib.parse.quote("市政府")+"&city="+urllib.parse.quote(city_name);
-    req = urllib.request.Request(url)
-    response = urllib.request.urlopen(req)
-    text = response.read()
+    city_name = urllib.quote(city_name.encode('utf-8', 'replace'));
+    spt_str = urllib.quote("市政府".encode('utf-8', 'replace'))
+    url = "http://api.map.baidu.com/geocoder/v2/?ak=fci7iKfiurBcqTSeXEm0lGtw&callback=renderOption&output=xml&address="+city_name+spt_str+"&city="+city_name;
+    print("Starting Req Baidu")
+    print(city_name)
+    print(url)
+    # url = url.decode('gbk', 'replace')
+    # url = urllib.quote(url.encode('utf-8', 'replace'))
+    # req = urllib.Request(url)
+    try:
+        response = urllib.urlopen(url)
+        text = response.read()
+    except:
+        print ("got exception")
     print (text)
     return text
 
 if __name__ == '__main__':
-    getCityPlaceByBaidu('百度大厦')
+    getCityPlaceByBaidu('北京')

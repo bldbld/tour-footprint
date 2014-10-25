@@ -23,7 +23,6 @@ def showsimplemap (request):
 
 ################################################################################
 # 获取路线列表JSON，用于显示地图
-# 废弃
 def get_simpleroute_list_line(request):
     route_list_q = SimpleRoute.objects.filter(owner=request.user)
     json_str = "{'route':["
@@ -35,6 +34,7 @@ def get_simpleroute_list_line(request):
 
 ################################################################################    
 # 获取路线列表JSON，用于显示标题
+# 废弃
 def get_simpleroute_list(request):
     route_list_q = SimpleRoute.objects.filter(owner=request.user)
     json_str = "{'route':["
