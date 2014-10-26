@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Bikers</title>
+		<meta charset="utf-8">
+		{% load staticfiles %}
+		<link href="{% static "tourfp_nweb/css/style.css" %}" rel="stylesheet" type="text/css" />
+	</head>
+
+	<body>
+		<div id="page">
+			{% include 'nbase.html' %}
+			<div id="body">
+				<div class="contents">
+					<h1>注册新用户</h1>
+					<div class="registration">
+						<p>
+							This website template has been collect from for you, for free. You can replace all this text with your own text.
+							You can remove any link to our website from this website template, you're free to use this website template without linking back to us.
+							If you're having problems editing this website template, then don't hesitate to ask for help on the Forum.
+						</p>
+						<form action="/html_reg_submit/" method="post">
+							{% csrf_token %}
+							<table cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td><label>用户名*</label></td><td>
+										<input type="text" name="username" class="txtfield" />
+										</td>
+									</tr>
+									<tr>
+										<td><label>邮箱*</label></td><td>
+										<input type="text" name="email" class="txtfield" />
+										</td>
+									</tr>
+									<tr>
+										<td><label>密码*</label></td><td>
+										<input type="password" name="password" class="txtfield" />
+										</td>
+									</tr>
+									<tr>
+										<td><label>确认密码*</label></td><td>
+										<input type="password" name="password" class="txtfield" />
+										</td>
+									</tr>
+									<tr>
+										<td><label>地址</label></td><td>										<textarea></textarea></td>
+									</tr>
+									<tr>
+										<td colspan="2">
+										<input type="checkbox" class="checkbox" />
+										<label>我同意服务协议</label></td>
+									</tr>
+									<tr>
+										<td colspan="2">
+										<input type="submit" value="提交" class="button" />
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">* 为必填项</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+				</div>
+
+				<!-- end of sidebar
+				<div id="sidebar">
+				<ul>
+				<li>
+				<h3><a href="about.htm">Proin sollicitudin dignissim ligula sed vestibulum.</a></h3>
+				<p>
+				Vestibulum sed magna eu justo tempor facilisis sed ut felis. Ut vitae tortor neque, convallis lobortis enim.
+				</p>
+				</li>
+				<li>
+				<h3><a href="about.htm"> Quisque purus nisl, feugiat  vitae convallis eu</a></h3>
+				<p>
+				Nulla nunc magna, fringillavitae mattis insuscipitausto. Fusce laoreet, velit non feugiat laoreet, sem massa convallis tellus, et rutrum velit erat.
+				</p>
+				</li>
+				<li>
+				<h3><a href="about.htm">Nunc ullamcorper, velit quis  mattis eleifend </a></h3>
+				<p>
+				Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla tortor mauris, tempus in convallis in.
+				</p>
+				</li>
+				</ul>
+
+				<h3>联系我们</h3>
+				</div>
+
+				-->
+			</div>
+			<!-- end of body wrapper -->
+		</div>
+		{% include 'nfooter.html' %}
+		<!-- end of footer part -->
+	</body>
+</html>

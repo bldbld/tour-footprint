@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from tourfp_simplemap.models import SimpleRoute
 from tourfp_simplemap.lbsservice import getCityPlaceByBaidu, SimplePoint
 from util.CoordinateDataUtil import CoordinateDataUtil
+from django.contrib.auth.models import User
 import json
 
 ################################################################################
@@ -24,7 +25,10 @@ def showsimplemap (request):
 ################################################################################
 # 获取路线列表JSON，用于显示地图
 def get_simpleroute_list_line(request):
-    route_list_q = SimpleRoute.objects.filter(owner=request.user)
+    mapUserName = request.GET.get("mapUserName")
+    user = User.objects.get(username=mapUserName);
+    # route_list_q = SimpleRoute.objects.filter(owner=request.user)
+    route_list_q = SimpleRoute.objects.filter(owner=user)
     json_str = "{'route':["
     for item_q in route_list_q:
         json_str = json_str + item_q.to_json_line() + ','

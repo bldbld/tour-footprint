@@ -29,7 +29,7 @@ urlpatterns = patterns('',
     
     # 创建地图 主页面
     url(r'^createmap/', webShowmap, name='createmap'),
-    url(r'^people/\w+/createmap/', webShowmap, name='people_createmap'),#\w  = [a-zA-Z0-9_]
+    url(r'^people/\w+/map/', webShowmap, name='people_map'),#\w  = [a-zA-Z0-9_]
     
     # 展示地图
     url(r'^showmap/', showmap, name='showmap'),

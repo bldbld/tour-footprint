@@ -14,13 +14,13 @@
 				<!-- start of header -->
 				<ul>
 					<li class="current">
-						<a href="index.htm">主页</a>
+						<a href="{%url 'index' %}">主页</a>
 					</li>
 					<li>
 						<a href="about.htm">关于</a>
 					</li>
 					<li>
-						<a href="events.htm">地图</a>
+						<a href="/people/{{request.user.username}}/map/">地图</a>
 					</li>
 					<li>
 						<a href="gallery.htm">逛逛</a>

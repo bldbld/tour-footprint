@@ -31,7 +31,7 @@
 						<div>
 							<table id="route_list_table" width="500" border="0" cellspacing="0" cellpadding="0">
 								<tr>
-									<td height="30" align="center" >序号</td>
+									<td height="30" align="center" bgcolor="#CCCCCC">序号</td>
 									<td align="center" bgcolor="#CCCCCC">名称</td>
 									<td align="center" bgcolor="#CCCCCC">操作</td>
 									<td align="center" bgcolor="#CCCCCC" hidden = "true"></td>
@@ -145,14 +145,34 @@
 		 * 路线列表地图元素
 		 */
 		var mapShowRoutelist = new Array();
+		
+		/**
+		 * 用户名，非登录用户名，而是当前地图的所有者 
+		 */
+		var mapUserName = "";
 
 		/**
 		 * 初始化页面
 		 */
 		function init() {
 			// initRouteListBrief();
+			parseUrl();
 			initMap();
-			initRouteList();
+			
+			
+			var paradata = {
+				"mapUserName" : mapUserName
+			};
+			initRouteList(paradata);
+		}
+
+		/**
+		 * 解析当前网页链接，获得用户名等信息
+		 */
+		function parseUrl() {
+			var currUrl  = window.location.pathname;
+			var currUrls = currUrl.split("/");
+			mapUserName = currUrls[2];
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -191,11 +211,12 @@
 		/**
 		 * Ajax获取路线列表（展示地图）
 		 */
-		function initRouteList() {
+		function initRouteList(paradata) {
 			$.ajax({
 				type : "GET",
 				url : "/get_simpleroute_list_line/",
 				dataType : "json",
+				data : paradata,
 				success : function(json) {
 					var i = 0;
 					// window.alert(json);
@@ -437,7 +458,7 @@
 			var paradata = {
 				"startName" : startname,
 				"endName" : endname
-			};	
+			};
 			saveRoute(paradata);
 		}
 
@@ -566,150 +587,150 @@
 		}
 	</script>
 	<script type="text/javascript">
-			/**
-			 * 实现搜索输入框的输入提示js类
-			 */
-			function oSearchSuggest(searchFuc, inputId, suggestWrapId) {
-				var input = $(inputId);
-				var suggestWrap = $(suggestWrapId);
-				var key = "";
-				var init = function() {
-					input.bind('keyup', sendKeyWord);
-					input.bind('blur', function() {
-						setTimeout(hideSuggest, 100);
-					});
-				};
-				var hideSuggest = function() {
-					suggestWrap.hide();
-				};
-				//发送请求，根据关键字到后台查询
-				var sendKeyWord = function(event) {
+		/**
+		 * 实现搜索输入框的输入提示js类
+		 */
+		function oSearchSuggest(searchFuc, inputId, suggestWrapId) {
+			var input = $(inputId);
+			var suggestWrap = $(suggestWrapId);
+			var key = "";
+			var init = function() {
+				input.bind('keyup', sendKeyWord);
+				input.bind('blur', function() {
+					setTimeout(hideSuggest, 100);
+				});
+			};
+			var hideSuggest = function() {
+				suggestWrap.hide();
+			};
+			//发送请求，根据关键字到后台查询
+			var sendKeyWord = function(event) {
 
-					//键盘选择下拉项
-					if (suggestWrap.css('display') == 'block' && event.keyCode == 38 || event.keyCode == 40) {
-						var current = suggestWrap.find('li.hover');
-						if (event.keyCode == 38) {
-							if (current.length > 0) {
-								var prevLi = current.removeClass('hover').prev();
-								if (prevLi.length > 0) {
-									prevLi.addClass('hover');
-									input.val(prevLi.html());
-								}
-							} else {
-								var last = suggestWrap.find('li:last');
-								last.addClass('hover');
-								input.val(last.html());
+				//键盘选择下拉项
+				if (suggestWrap.css('display') == 'block' && event.keyCode == 38 || event.keyCode == 40) {
+					var current = suggestWrap.find('li.hover');
+					if (event.keyCode == 38) {
+						if (current.length > 0) {
+							var prevLi = current.removeClass('hover').prev();
+							if (prevLi.length > 0) {
+								prevLi.addClass('hover');
+								input.val(prevLi.html());
 							}
-
-						} else if (event.keyCode == 40) {
-							if (current.length > 0) {
-								var nextLi = current.removeClass('hover').next();
-								if (nextLi.length > 0) {
-									nextLi.addClass('hover');
-									input.val(nextLi.html());
-								}
-							} else {
-								var first = suggestWrap.find('li:first');
-								first.addClass('hover');
-								input.val(first.html());
-							}
+						} else {
+							var last = suggestWrap.find('li:last');
+							last.addClass('hover');
+							input.val(last.html());
 						}
 
-						//输入字符
-					} else {
-						var valText = $.trim(input.val());
-						if (valText == '' || valText == key) {
-							return;
+					} else if (event.keyCode == 40) {
+						if (current.length > 0) {
+							var nextLi = current.removeClass('hover').next();
+							if (nextLi.length > 0) {
+								nextLi.addClass('hover');
+								input.val(nextLi.html());
+							}
+						} else {
+							var first = suggestWrap.find('li:first');
+							first.addClass('hover');
+							input.val(first.html());
 						}
-						searchFuc(valText);
-						key = valText;
 					}
 
-				};
-				//请求返回后，执行数据展示
-				this.dataDisplay = function(data) {
-					if (data.length <= 0) {
-						suggestWrap.hide();
+					//输入字符
+				} else {
+					var valText = $.trim(input.val());
+					if (valText == '' || valText == key) {
 						return;
 					}
+					searchFuc(valText);
+					key = valText;
+				}
 
-					//往搜索框下拉建议显示栏中添加条目并显示
-					var li;
-					var tmpFrag = document.createDocumentFragment();
-					suggestWrap.find('ul').html('');
-					for (var i = 0; i < data.length; i++) {
-						li = document.createElement('LI');
-						li.innerHTML = data[i];
-						tmpFrag.appendChild(li);
-					}
-					suggestWrap.find('ul').append(tmpFrag);
-					suggestWrap.show();
-
-					//为下拉选项绑定鼠标事件
-					suggestWrap.find('li').hover(function() {
-						suggestWrap.find('li').removeClass('hover');
-						$(this).addClass('hover');
-
-					}, function() {
-						$(this).removeClass('hover');
-					}).bind('click', function() {
-						input.val(this.innerHTML);
-						suggestWrap.hide();
-					});
-				};
-				init();
 			};
+			//请求返回后，执行数据展示
+			this.dataDisplay = function(data) {
+				if (data.length <= 0) {
+					suggestWrap.hide();
+					return;
+				}
 
-			//实例化输入提示的JS,参数为进行查询操作时要调用的函数名
-			//起点
-			var searchSuggest = new oSearchSuggest(sendKeyWordToBack, '#add_start', '#add_start_search_suggest');
+				//往搜索框下拉建议显示栏中添加条目并显示
+				var li;
+				var tmpFrag = document.createDocumentFragment();
+				suggestWrap.find('ul').html('');
+				for (var i = 0; i < data.length; i++) {
+					li = document.createElement('LI');
+					li.innerHTML = data[i];
+					tmpFrag.appendChild(li);
+				}
+				suggestWrap.find('ul').append(tmpFrag);
+				suggestWrap.show();
 
-			//向后台发送ajax查询请求，并返回一个查询结果数据，传递给前台的JS,再由前台JS来展示数据。
-			//参数为一个字符串，是搜索输入框中当前的内容
-			function sendKeyWordToBack(keyword) {
-				var paradata = {
-					"text" : keyword
-				};
-				$.ajax({
-					type : "GET",
-					url : "/match_text/",
-					dataType : "json",
-					data : paradata,
-					success : function(json) {
-						if (json != null) {
-							var data = json.toString();
-							var aData = data.split(",");
-							searchSuggest.dataDisplay(aData);
-						}
-					}
+				//为下拉选项绑定鼠标事件
+				suggestWrap.find('li').hover(function() {
+					suggestWrap.find('li').removeClass('hover');
+					$(this).addClass('hover');
+
+				}, function() {
+					$(this).removeClass('hover');
+				}).bind('click', function() {
+					input.val(this.innerHTML);
+					suggestWrap.hide();
 				});
+			};
+			init();
+		};
 
-			}
+		//实例化输入提示的JS,参数为进行查询操作时要调用的函数名
+		//起点
+		var searchSuggest = new oSearchSuggest(sendKeyWordToBack, '#add_start', '#add_start_search_suggest');
 
-			//实例化输入提示的JS,参数为进行查询操作时要调用的函数名
-			//目的地
-			var searchSuggestTo = new oSearchSuggest(sendKeyWordToBackTo, '#add_to', '#add_to_search_suggest');
-
-			//向后台发送ajax查询请求，并返回一个查询结果数据，传递给前台的JS,再由前台JS来展示数据。
-			//参数为一个字符串，是搜索输入框中当前的内容
-			function sendKeyWordToBackTo(keyword) {
-				var paradata = {
-					"text" : keyword
-				};
-				$.ajax({
-					type : "GET",
-					url : "/match_text/",
-					dataType : "json",
-					data : paradata,
-					success : function(json) {
-						if (json != null) {
-							var data = json.toString();
-							var aData = data.split(",");
-							searchSuggestTo.dataDisplay(aData);
-						}
+		//向后台发送ajax查询请求，并返回一个查询结果数据，传递给前台的JS,再由前台JS来展示数据。
+		//参数为一个字符串，是搜索输入框中当前的内容
+		function sendKeyWordToBack(keyword) {
+			var paradata = {
+				"text" : keyword
+			};
+			$.ajax({
+				type : "GET",
+				url : "/match_text/",
+				dataType : "json",
+				data : paradata,
+				success : function(json) {
+					if (json != null) {
+						var data = json.toString();
+						var aData = data.split(",");
+						searchSuggest.dataDisplay(aData);
 					}
-				});
+				}
+			});
 
-			}
-		</script>
+		}
+
+		//实例化输入提示的JS,参数为进行查询操作时要调用的函数名
+		//目的地
+		var searchSuggestTo = new oSearchSuggest(sendKeyWordToBackTo, '#add_to', '#add_to_search_suggest');
+
+		//向后台发送ajax查询请求，并返回一个查询结果数据，传递给前台的JS,再由前台JS来展示数据。
+		//参数为一个字符串，是搜索输入框中当前的内容
+		function sendKeyWordToBackTo(keyword) {
+			var paradata = {
+				"text" : keyword
+			};
+			$.ajax({
+				type : "GET",
+				url : "/match_text/",
+				dataType : "json",
+				data : paradata,
+				success : function(json) {
+					if (json != null) {
+						var data = json.toString();
+						var aData = data.split(",");
+						searchSuggestTo.dataDisplay(aData);
+					}
+				}
+			});
+
+		}
+	</script>
 </html>
