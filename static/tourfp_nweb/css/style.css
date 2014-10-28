@@ -485,3 +485,60 @@ img {
 	width:100%; 
 	height:600px;
 }
+
+#body .gover_search {
+	position: relative;
+	z-index: 99;
+	height: 63px;
+	padding: 15px 0 0 20px;
+	border-bottom: 0;
+	background: #4a2105;
+}
+#body .gover_search_form {
+	height: 36px;
+}
+#body .gover_search .search_t {
+	float: left;
+	width: 112px;
+	line-height: 26px;
+	color: #666666;
+}
+#body .gover_search .input_search_key {
+	float: left;
+	width: 462px;
+	height: 18px;
+	padding: 3px;
+	margin-right: 5px;
+	border: 1px solid #cccccc;
+	line-height: 18px;
+	background: #FFFFFF;
+}
+#body .gover_search .search_btn {
+	float: left;
+	width: 68px;
+	height: 26px;
+	overflow: hidden;
+	border: 1px solid #cccccc;
+	text-align: center;
+	color: #ff3300;
+	letter-spacing: 5px;
+	cursor: pointer;
+	font-weight: bold;
+}
+#body .gover_search .search_suggest {
+	position: absolute;
+	z-index: 999;
+	left: 32px;
+	top: 141px;
+	width: 168px;
+	border: 1px solid #999999;
+	display: none;
+}
+#body .gover_search .search_suggest li {
+	height: 20px;
+	overflow: hidden;
+	padding-left: 3px;
+	line-height: 20px;
+	background: #4a2105;
+	cursor: default;
+}

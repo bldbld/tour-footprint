@@ -28,7 +28,7 @@
 					<div id="mapcontainer"></div>
 					<div class="main">
 						<h3 class="indent-bot">路线列表：</h3>
-						<div>
+						<div  class="contents" >
 							<table id="route_list_table" width="500" border="0" cellspacing="0" cellpadding="0">
 								<tr>
 									<td height="30" align="center" bgcolor="#CCCCCC">序号</td>
@@ -57,19 +57,18 @@
 					</div>
 					<div class="sidebar">
 						<h3 class="indent-bot">添加地点</h3>
-						<div>
-							<div>
+						<div  class="contents" >
+							<div class="gover_search">  
 								<p>
 									起点:
-									<input id="add_start" type="text" name="fname" />
-									<div class="search_suggest" id="add_start_search_suggest">
+									<input id="add_start" type="text" name="fname" placeholder="请输入关键词直接搜索" />  
+									<div class="search_suggest" id="add_start_search_suggest"  hidden="true">
 										<ul></ul>
 									</div>
-								</p>
-								<p>
-									重点:
-									<input id="add_to" type="text" name="lname" />
-									<div class="search_suggest" id="add_to_search_suggest">
+								
+									终点:
+									<input id="add_to" type="text" name="lname" placeholder="请输入关键词直接搜索" />  
+									<div class="search_suggest" id="add_to_search_suggest"  hidden="true">
 										<ul></ul>
 									</div>
 								</p>
@@ -145,9 +144,9 @@
 		 * 路线列表地图元素
 		 */
 		var mapShowRoutelist = new Array();
-		
+
 		/**
-		 * 用户名，非登录用户名，而是当前地图的所有者 
+		 * 用户名，非登录用户名，而是当前地图的所有者
 		 */
 		var mapUserName = "";
 
@@ -158,8 +157,7 @@
 			// initRouteListBrief();
 			parseUrl();
 			initMap();
-			
-			
+
 			var paradata = {
 				"mapUserName" : mapUserName
 			};
@@ -170,7 +168,7 @@
 		 * 解析当前网页链接，获得用户名等信息
 		 */
 		function parseUrl() {
-			var currUrl  = window.location.pathname;
+			var currUrl = window.location.pathname;
 			var currUrls = currUrl.split("/");
 			mapUserName = currUrls[2];
 		}
