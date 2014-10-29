@@ -20,12 +20,12 @@
 						<a href="about.htm">关于</a>
 					</li>
 					<li>
-						<a href="/people/{{request.user.username}}/map/">地图</a>
-					</li>
-					<li>
 						<a href="gallery.htm">逛逛</a>
 					</li>
 					{%if request.user.is_authenticated %}
+					<li>
+						<a href="/people/{{request.user.username}}/map/">地图</a>
+					</li>
 					<li>
 						<a>{{request.user.username}}</a>
 					</li>
@@ -43,7 +43,7 @@
 				</ul>
 
 				<div>
-					<a href="register.htm" class="join"></a>
+					<a href="{%url 'reg' %}" class="join"></a>
 					<h3>加入进来吧！</h3>
 					<p>
 						已有账号？点击登录

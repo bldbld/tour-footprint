@@ -79,7 +79,8 @@ def html_login_submit(request):
         #return render_to_response("index.html",template_var,context_instance=RequestContext(request))
         return HttpResponseRedirect(reverse("index"))    
     else: 
-        return render_to_response("login.html",context_instance=RequestContext(request))
+        template_var["w"]=_("123")
+        return render_to_response("nlogin.html",context_instance=RequestContext(request))
 
 # 使用HTML网页进行注册
 def html_reg_submit(request):
@@ -110,9 +111,9 @@ def _login(request, username, password):
             auth_login(request, user)
             ret = True
         else:
-            messages.add_message(request, messages.INFO, _("用户没有激活"))
+            messages.add_message(request, messages.INFO, _("User not active"))
     else:
-        messages.add_message(request, messages.INFO, _("用户不存在"))
+        messages.add_message(request, messages.INFO, _("User not exist"))
     return ret
     
 def logout(request):

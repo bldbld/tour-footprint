@@ -20,37 +20,34 @@
 							You can remove any link to our website from this website template, you're free to use this website template without linking back to us.
 							If you're having problems editing this website template, then don't hesitate to ask for help on the Forum.
 						</p>
-						<form action="/html_reg_submit/" method="post">
+						<form action="/html_reg_submit/" method="post" onsubmit='return checkInfo(this);'>
 							{% csrf_token %}
 							<table cellspacing="0" cellpadding="0">
 								<tbody>
 									<tr>
 										<td><label>用户名*</label></td><td>
 										<input type="text" name="username" class="txtfield" />
-										</td>
+										&nbsp;&nbsp;&nbsp;&nbsp;6-25个字符，可使用英文字母、数字、下划线
 									</tr>
 									<tr>
-										<td><label>邮箱*</label></td><td>
+										<td><label>邮箱地址*</label></td><td>
 										<input type="text" name="email" class="txtfield" />
-										</td>
+										&nbsp;&nbsp;&nbsp;&nbsp;输入您常用的邮箱地址 </td>
 									</tr>
 									<tr>
 										<td><label>密码*</label></td><td>
 										<input type="password" name="password" class="txtfield" />
-										</td>
+										&nbsp;&nbsp;&nbsp;&nbsp;推荐使用组合密码 </td>
 									</tr>
 									<tr>
 										<td><label>确认密码*</label></td><td>
-										<input type="password" name="password" class="txtfield" />
+										<input type="password" name="passwordConfirm" class="txtfield" />
 										</td>
 									</tr>
 									<tr>
-										<td><label>地址</label></td><td>										<textarea></textarea></td>
-									</tr>
-									<tr>
 										<td colspan="2">
-										<input type="checkbox" class="checkbox" />
-										<label>我同意服务协议</label></td>
+										<input type="checkbox" name="agreePolicy" class="checkbox" />
+										<label>我已阅读并接受《秀足迹服务使用协议》</label></td>
 									</tr>
 									<tr>
 										<td colspan="2">
@@ -65,38 +62,70 @@
 						</form>
 					</div>
 				</div>
-
-				<!-- end of sidebar
-				<div id="sidebar">
-				<ul>
-				<li>
-				<h3><a href="about.htm">Proin sollicitudin dignissim ligula sed vestibulum.</a></h3>
-				<p>
-				Vestibulum sed magna eu justo tempor facilisis sed ut felis. Ut vitae tortor neque, convallis lobortis enim.
-				</p>
-				</li>
-				<li>
-				<h3><a href="about.htm"> Quisque purus nisl, feugiat  vitae convallis eu</a></h3>
-				<p>
-				Nulla nunc magna, fringillavitae mattis insuscipitausto. Fusce laoreet, velit non feugiat laoreet, sem massa convallis tellus, et rutrum velit erat.
-				</p>
-				</li>
-				<li>
-				<h3><a href="about.htm">Nunc ullamcorper, velit quis  mattis eleifend </a></h3>
-				<p>
-				Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla tortor mauris, tempus in convallis in.
-				</p>
-				</li>
-				</ul>
-
-				<h3>联系我们</h3>
-				</div>
-
-				-->
 			</div>
 			<!-- end of body wrapper -->
 		</div>
 		{% include 'nfooter.html' %}
 		<!-- end of footer part -->
 	</body>
+	<script type="text/javascript">
+		var usernamePattenrn = /^[\w]{6,25}$/;
+		var emailPattenrn =  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+
+		/**
+		 * 校验填写的信息
+		 */
+		function checkInfo(form) {
+			if (form.username.value == '') {
+				alert('请输入用户名');
+				form.username.focus();
+				return false;
+			}
+			if (!checkUsername(form.username.value)) {
+				alert('请输入正确的用户名');
+				form.username.focus();
+				return false;
+			}
+			if (form.email.value == '') {
+				alert('请输入邮箱地址');
+				form.email.focus();
+				return false;
+			}
+			if (!checkEmail(form.email.value)) {
+				alert('请输入正确的邮箱地址');
+				form.email.focus();
+				return false;
+			}
+			if (form.password.value == '') {
+				alert('请输入密码');
+				form.password.focus();
+				return false;
+			}
+			if (form.passwordConfirm.value != form.password.value) {
+				alert('两次密码不一致');
+				form.password.focus();
+				return false;
+			}
+			if (!form.agreePolicy.checked) {
+				alert('如果您拒绝接受服务协议，您将无法完成注册');
+				form.agreePolicy.focus();
+				return false;
+			}
+			return true;
+		}
+
+		/**
+		 * 校验密码是否符合规则
+		 */
+		function checkUsername(username) {
+			return usernamePattenrn.test(username);
+		}
+
+		/**
+		 * 校验密码是否符合规则
+		 */
+		function checkEmail(email) {
+			return emailPattenrn.test(email);
+		}
+	</script>
 </html>

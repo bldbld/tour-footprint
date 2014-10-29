@@ -7,7 +7,6 @@
 		{% load staticfiles %}
 		<link href="{% static "tourfp_nweb/css/style.css" %}" rel="stylesheet" type="text/css" />
 	</head>
-
 	<body>
 		<div id="page">
 			{% include 'nbase.html' %}
@@ -20,12 +19,22 @@
 							You can remove any link to our website from this website template, you're free to use this website template without linking back to us.
 							If you're having problems editing this website template, then don't hesitate to ask for help on the Forum.
 						</p>
-						<form action="/html_login_submit/" method="post">
+						{% if messages %}
+						<ul>
+							{% for message in messages %}
+							<li>
+								{{ message }}
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						{% endif %}
+						<form action="/html_login_submit/" method="post" onsubmit='return checkInfo(this);'>
 							{% csrf_token %}
 							<table cellspacing="0" cellpadding="0">
 								<tbody>
 									<tr>
-										<td><label>用户</label></td><td>
+										<td><label>用户名</label></td><td>
 										<input type="text" name="username" class="txtfield" />
 										</td>
 									</tr>
@@ -35,7 +44,6 @@
 										</td>
 									</tr>
 									<tr>
-
 										<td colspan="2">
 										<input type="submit" value="登录" class="button" />
 										</td>
@@ -43,8 +51,7 @@
 								</tbody>
 							</table>
 						</form>
-						<p>
-						</p>
+						<p></p>
 						还没有账号？快来<a href="{%url 'reg'%}"><b>注册</b></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回<a href="{%url 'index'%}">首页</a>
 					</div>
 				</div>
@@ -54,4 +61,22 @@
 		{% include 'nfooter.html' %}
 		<!-- end of footer part -->
 	</body>
+	<script type="text/javascript">
+		/**
+		 * 校验填写的信息
+		 */
+		function checkInfo(form) {
+			if (form.username.value == '') {
+				alert('请输入用户名');
+				form.username.focus();
+				return false;
+			}
+			if (form.password.value == '') {
+				alert('请输入密码');
+				form.password.focus();
+				return false;
+			}
+			return true;
+		}
+	</script>
 </html>
