@@ -12,17 +12,6 @@ from django.contrib.auth.models import User
 import json
 
 ################################################################################
-# 显示地图
-# 废弃
-def showsimplemap (request):
-    t = get_template('baidu/map.html')
-    # tourlist = tour.objects.all()
-    # json.dumps(routearr, ensure_ascii=False).
-    route_list = get_routelist(request.user)
-    html = t.render(Context({'route_list': route_list}))
-    return HttpResponse(html)
-
-################################################################################
 # 获取路线列表JSON，用于显示地图
 def get_simpleroute_list_line(request):
     mapUserName = request.GET.get("mapUserName")

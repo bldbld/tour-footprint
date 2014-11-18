@@ -37,7 +37,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tourfp_web',
-    'tourfp_map',
     'tourfp_simplemap',
 )
 
