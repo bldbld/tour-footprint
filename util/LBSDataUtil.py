@@ -8,6 +8,7 @@ import  xml.dom.minidom
 from xml.dom.minidom import Document
 from tourfp_simplemap.lbsservice import SimplePoint, getCityPlaceByBaidu
 
+# 此方法解析chinacities.xml，然后得到一个simple.xml，并去掉一些地名的全称
 if __name__ == '__main__':
     # 获得中国地区的坐标数据
     # 导入的XML为Office 2013Excel导出

@@ -79,7 +79,7 @@ def html_login_submit(request):
         #return render_to_response("index.html",template_var,context_instance=RequestContext(request))
         return HttpResponseRedirect(reverse("index"))    
     else: 
-        template_var["w"]=_("123")
+        template_var["w"]=_("Faild")
         return render_to_response("nlogin.html",context_instance=RequestContext(request))
 
 # 使用HTML网页进行注册
@@ -88,6 +88,12 @@ def html_reg_submit(request):
     username = request.POST.get("username")
     password = request.POST.get("password")
     email = request.POST.get("email")
+    existUser = User.objects.get(username=username);
+    template_var={}
+    if existUser :
+        messages.add_message(request, messages.INFO, _("USER_REG_FAILED"))
+        template_var["w"]=_("Faild")
+        return render_to_response("nreg.html",context_instance=RequestContext(request))
     user = User.objects.create_user(username, email, password)
     user.save()
     _login(request, username, password)  # 注册完毕 直接登陆
@@ -105,15 +111,15 @@ def _login(request, username, password):
     '''登陆核心方法'''
     ret = False
     user = authenticate(username=username, password=password)
-    print(user)
+    # print(user)
     if user:
         if user.is_active:
             auth_login(request, user)
             ret = True
         else:
-            messages.add_message(request, messages.INFO, _("User not active"))
+            messages.add_message(request, messages.INFO, _("USER_LOGIN_FAILED"))
     else:
-        messages.add_message(request, messages.INFO, _("User not exist"))
+        messages.add_message(request, messages.INFO, _("USER_LOGIN_FAILED"))
     return ret
     
 def logout(request):

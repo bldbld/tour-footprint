@@ -20,6 +20,14 @@
 							You can remove any link to our website from this website template, you're free to use this website template without linking back to us.
 							If you're having problems editing this website template, then don't hesitate to ask for help on the Forum.
 						</p>
+						{% if messages %}
+						<ul>
+							<li>
+									用户名已存在，请重新输入
+							</li>
+						</ul>
+						{% else %}
+						{% endif %}
 						<form action="/html_reg_submit/" method="post" onsubmit='return checkInfo(this);'>
 							{% csrf_token %}
 							<table cellspacing="0" cellpadding="0">
