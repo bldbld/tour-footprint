@@ -227,6 +227,7 @@
 						}
 						i++;
 					}
+					// 第一行作为后续增行的模板，隐藏
 					$("#route_list_table").find("tr:eq(1)").hide();
 				}
 			});
@@ -360,6 +361,7 @@
 		 * @param value 展示信息
 		 */
 		function add_row_value(value, id) {
+			// 获取当前的数量，加隐藏的一行
 			var count = routelist.length + 1;
 			// 从第一行复制出来
 			$("#route_list_table").find("tr:eq(" + (1) + ")").clone().appendTo("#route_list_table");
@@ -368,6 +370,8 @@
 			$("#route_list_table").find("tr:eq(" + count + ")").find("td:eq(1)").text(value);
 			// 记录ID
 			$("#route_list_table").find("tr:eq(" + count + ")").find("td:eq(3)").text(id);
+			// 设置自己不隐藏
+			$("#route_list_table").find("tr:eq(" + count + ")").show();
 			// 隐藏ID列
 			$("#route_list_table").find("tr:eq(" + count + ")").find("td:eq(3)").hide();
 		}

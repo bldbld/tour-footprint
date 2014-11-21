@@ -43,10 +43,10 @@ class CoordinateDataUtil(object):
         for line in chinaDatas:
             #print (line) 
             linedata = line.split(',')
-            if len(linedata) == 5:
+            if len(linedata) == 5: #code,full-title,title,lng,lat
                 self.placeList.append(linedata[2])
                 if len(linedata[3]) == 0:
-                    print('hasnone' + linedata[2])
+                    print('hasnone lng' + linedata[2])
         
     @classmethod    
     def instance(cls):    
@@ -77,6 +77,11 @@ class CoordinateDataUtil(object):
             if count >= 10: # 最多提供10个
                 break
         return returnList
+    
+    def getCoordinateByTitle(self, text):
+        for place in self.placeList:
+            if place == text:
+                print('get')
 
 print (CoordinateDataUtil.initialized()  )  
 ioloop = CoordinateDataUtil.instance()    
