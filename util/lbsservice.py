@@ -7,18 +7,14 @@ Created on 2014-5-29
 import urllib
 #from urlparse import urlparse
 from xml.etree import ElementTree
-from util.CoordinateDataUtil import CoordinateDataUtil
-
-# 坐标点信息
-class SimplePoint():
-    lat = None
-    lng = None
+from util.coordinateutil import CoordinateDataUtil
+from util.lbsmodel import CoordinatePoint
 
 # 通过城市名称获取坐标点SimplePoint
-def getCityPlaceByBaidu(city_name):
+def getCoordnatePointByName(city_name):
     geo_data = getGeoCoderDataByBaidu(city_name)
     root = ElementTree.fromstring(geo_data)
-    result = SimplePoint()
+    result = CoordinatePoint()
     result.lat = root.find('result').find('location').find('lat').text
     result.lng = root.find('result').find('location').find('lng').text
     print(result.lat)
@@ -65,4 +61,4 @@ def getGeoCoderDataByLocalUtil(city_name):
     return text
 
 if __name__ == '__main__':
-    getCityPlaceByBaidu('北京')
+    getCoordnatePointByName('北京')

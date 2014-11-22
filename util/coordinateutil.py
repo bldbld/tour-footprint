@@ -5,7 +5,8 @@ Created on 2014-9-18
 @author: ballad
 '''
 from django.core.files import File
-from util.ChinaCitiesData import ChinaCitiesData
+from util.lbsmodel import CoordinatePoint 
+from util.lbsdata_china import ChinaCitiesData
 
 # 坐标服务工具类
 class CoordinateDataUtil(object):
@@ -45,9 +46,16 @@ class CoordinateDataUtil(object):
             linedata = line.split(',')
             if len(linedata) == 5: #code,full-title,title,lng,lat
                 self.placeList.append(linedata[2])
-                if len(linedata[3]) == 0:
+                if len(linedata[3]) == 0 or (len(linedata[4]) == 0):
+                    # 如果没有坐标数据，不生成
                     print('hasnone lng' + linedata[2])
-        
+                else:
+                    p = CoordinatePoint()
+                    p.lng = linedata[3]
+                    p.lat = linedata[4]
+                    p.id = linedata[0]
+                    self.placeCoorDict[p.id] = p
+                    
     @classmethod    
     def instance(cls):    
         if not hasattr(cls, "_instance"):    
@@ -78,10 +86,16 @@ class CoordinateDataUtil(object):
                 break
         return returnList
     
+    # 通过城市标题获得 坐标
     def getCoordinateByTitle(self, text):
         for place in self.placeList:
             if place == text:
                 print('get')
+        # TODO
+                
+    def geneCoordinatePoint(self):
+        # TODO
+        return
 
 print (CoordinateDataUtil.initialized()  )  
 ioloop = CoordinateDataUtil.instance()    

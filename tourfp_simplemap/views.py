@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from tourfp_simplemap.models import SimpleRoute
-from tourfp_simplemap.lbsservice import getCityPlaceByBaidu, SimplePoint
-from util.CoordinateDataUtil import CoordinateDataUtil
+from util.lbsservice import getCoordnatePointByName
+from util.coordinateutil import CoordinateDataUtil
 from django.contrib.auth.models import User
 import json
 
@@ -46,12 +46,12 @@ def save_simpleroute(request):
     print(endName)
     # startPoint = SimplePoint()
     # endPoint = SimplePoint()
-    startPoint = getCityPlaceByBaidu(startName);
+    startPoint = getCoordnatePointByName(startName);
     if startPoint.lat == '' or startPoint.lng == '':
         json_str = "{'route':[{'has_error':'1'}]}"
         return HttpResponse(json.dumps(json_str, ensure_ascii=False))  
     print(startPoint.lat)
-    endPoint = getCityPlaceByBaidu(endName);
+    endPoint = getCoordnatePointByName(endName);
     if endPoint.lat == '' or endPoint.lng == '':
         json_str = "{'route':[{'has_error':'1'}]}"
         return HttpResponse(json.dumps(json_str, ensure_ascii=False))  
